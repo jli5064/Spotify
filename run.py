@@ -48,9 +48,9 @@ def main(targets):
     if ('data' in targets) or ('spotify' in targets):
         print("This will download kaggle data")
         with open('config/spotify_etl.json') as fh:
-            nips_etl_config = json.load(fh)
-        pull_kaggle_data(**nips_etl_config)
-        read_raw_sql(**nips_etl_config)
+            spotify_etl_config = json.load(fh)
+        pull_kaggle_data(**spotify_etl_config)
+        read_raw_sql(**spotify_etl_config)
         
         
     # if 'spectral' in targets:

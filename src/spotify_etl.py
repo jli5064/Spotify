@@ -45,9 +45,14 @@ def read_raw_sql(kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_
         print("Pickle data already prepared for analysis! Moving on to next step")
     else:
         n = 4
-        df_spotify = pd.read_csv(data_dir + raw_data_filename, skiprows=1,
-                         names=['user_id', 'artistname', 'trackname', 'playlistname'],
-                         on_bad_lines='skip')
+        df = pd.read_csv(os.path.join(data_dir, raw_data_filename),
+                        usecols=range(n),
+                        lineterminator='\n',
+                        header=None)
+
+        df = df[1:] #take the data less the header row
+        df.columns = ["user_id", "artistname", "trackname", "playlistname"] #set the header row as the df heade
+        # print(df)
 
         # G = nx.Graph()
 
