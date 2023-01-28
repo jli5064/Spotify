@@ -10,8 +10,6 @@ import matplotlib.pyplot as plt
 import itertools
 
 
-# TODO: ADD HEADER
-# TODO: ADD json option for multiply vs add?
 # kaggle datasets download -d andrewmvd/spotify-playlists
 
 
@@ -19,9 +17,6 @@ import itertools
 # "temp_dir": "data/spotify/temp/",
 # "data_dir": "data/spotify/raw/"
 
-
-
-# TODO: get json file read in and remove key
 os.environ['KAGGLE_USERNAME']="andrewmokhta"
 os.environ['KAGGLE_KEY']="eb7de261bcf48ef0ca684c07e28bb309"
 
@@ -42,24 +37,11 @@ def pull_kaggle_data(kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pic
 
 def read_raw_sql(kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
     if os.path.exists(temp_dir + temp_pickle_graph_filename):
-        print("Pickle data already prepared for analysis! Moving on to next step")
+        print("Kaggle data already prepared for analysis! Moving on to next step")
     else:
         n = 4
         df = pd.read_csv(os.path.join(data_dir, raw_data_filename),
                         usecols=range(n),
                         lineterminator='\n',
-                        header=None)
-
-        df = df[1:] #take the data less the header row
-        df.columns = ["user_id", "artistname", "trackname", "playlistname"] #set the header row as the df heade
-        # print(df)
-
-        # G = nx.Graph()
-
-        # for p, a in df_nips.groupby('paper_id')['author_name']: 
-        #     for a1, a2 in itertools.combinations(a, 2):
-        #     # creates an edge
-        #         read_edge(G, a1, a2)
-
-        # pickle.dump(G, open(temp_dir + temp_pickle_graph_filename, 'wb'))
-        # print(temp_dir + temp_pickle_graph_filename + ' saved!')
+                        header=0)
+        df.columns = [x.replace('"', '').lstrip() for x in df.columns]
