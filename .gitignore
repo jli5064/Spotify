@@ -1,5 +1,7 @@
 data/
-.DS_Store
 data/.DS_Store
 src/.DS_Store
+src/__pycache__/
+.ipynb_checkpoints/
+.DS_Store
 *cpython*
