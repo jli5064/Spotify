@@ -63,11 +63,6 @@ def train(A, C, iterations = 100):
         ll = log_likelihood(F, A)
     return F, log_likelihood(F, A)
 #### 
-def read_edge(gph, n0, n1):
-    if gph.has_edge(n0, n1):
-        gph[n0][n1]['weight'] +=1
-    else:
-        gph.add_edge(n0, n1, weight=1)
  
 def correct_pred(pred, genres, nodes):
     total = 0
