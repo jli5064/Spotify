@@ -41,7 +41,7 @@ def main(targets):
             print("test df created!")
         
     if 'model' in targets:
-        #G = load in the spotify graph from pickle
+        #G = load in the small spotify sample from pickle
         #genres = pull genres from artist sample
         acc = eval(G, genres)
         
