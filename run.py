@@ -40,7 +40,11 @@ def main(targets):
             test_df = create_test_sample(df, kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])
             print("test df created!")
         
-
+    if 'model' in targets:
+        #G = load in the spotify graph from pickle
+        #genres = pull genres from artist sample
+        acc = eval(G, genres)
+        
         
 if __name__ == '__main__':
     # run via:
