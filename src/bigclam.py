@@ -75,6 +75,7 @@ def correct_pred(pred, genres, nodes):
     return total
 
 def eval(G, genres):
+    A = nx.to_numpy_array(G)
     F, ll = train(A, 3)
     pred = np.argmax(F, 1)
     
