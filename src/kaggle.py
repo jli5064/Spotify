@@ -17,13 +17,15 @@ import itertools
 # "temp_dir": "data/spotify/temp/",
 # "data_dir": "data/spotify/raw/"
 
-os.environ['KAGGLE_USERNAME']="andrewmokhta"
-os.environ['KAGGLE_KEY']="eb7de261bcf48ef0ca684c07e28bb309"
+
 
 from kaggle.api.kaggle_api_extended import KaggleApi
 
 
-def pull_kaggle_data(kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
+def pull_kaggle_data(username, key, kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
+
+    os.environ['KAGGLE_USERNAME']=username
+    os.environ['KAGGLE_KEY']=key
 
     if os.path.exists(data_dir + raw_data_filename):
         print("Raw data already downloaded from Kaggle! Moving on to next step")
@@ -33,9 +35,10 @@ def pull_kaggle_data(kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pic
 
         print(kapi.dataset_list_files(kaggle_dir).files)
         kapi.dataset_download_files(kaggle_dir, path=data_dir, quiet=False, unzip=True)
+        print("kaggle data downloaded")
 
 
-def read_raw_sql(kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
+def read_raw_sql(username, key, kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
     if os.path.exists(temp_dir + temp_pickle_graph_filename):
         print("Kaggle data already prepared for analysis! Moving on to next step")
     else:

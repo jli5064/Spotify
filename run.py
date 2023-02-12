@@ -5,14 +5,9 @@ import json
 import networkx as nx
 
 sys.path.insert(0, 'src')
-from spotify_etl import pull_kaggle_data, read_raw_sql
 
-# from clean import clean
-# from test_etl import create_rand_graphs, create_combined, create_combined_edges
-# from nips_etl import pull_kaggle_data, read_raw_sql
-# from political_etl import pull_political_data, fix_political_gml, prepare_political
-# from spectral_analysis import graph_stats, return_sub_graphs, spectral_cluster, spectral_evaluation, create_original_data, save_ground_truth_graph, save_prediction_graph
-
+from clean import clean
+from kaggle import pull_kaggle_data, read_raw_sql
 
 
 def main(targets):
@@ -45,9 +40,9 @@ def main(targets):
     #     create_combined(**test_etl_config)
     #     create_combined_edges(**test_etl_config)
 
-    if ('data' in targets) or ('spotify' in targets):
-        print("This will download kaggle data")
-        with open('config/spotify_etl.json') as fh:
+    if ('data' in targets) or ('kaggle' in targets):
+        print("This will download kaggle spotify data (test)")
+        with open('config/kaggle.json') as fh:
             spotify_etl_config = json.load(fh)
         pull_kaggle_data(**spotify_etl_config)
         read_raw_sql(**spotify_etl_config)
