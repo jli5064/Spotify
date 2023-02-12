@@ -88,4 +88,4 @@ def eval(G, genres):
     for i in [one, two, three]:
         total += correct_pred(i, genres, nodes)
     
-    return total/len(nodes)
+    return total/len(nodes), pred
