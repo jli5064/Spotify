@@ -78,3 +78,15 @@ def correct_pred(pred, genres, nodes):
                     total += 1
                     break
     return total
+
+def eval(G, genres):
+    nodes = list(G.nodes())
+    one = [nodes[i] for i in np.where(pred == 0)[0]]
+    two = [nodes[i] for i in np.where(pred == 1)[0]]
+    three = [nodes[i] for i in np.where(pred == 2)[0]]
+    
+    total = 0
+    for i in [one, two, three]:
+        total += correct_pred(i, genres, nodes)
+    
+    return total/len(nodes)
