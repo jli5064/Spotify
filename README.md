@@ -18,7 +18,7 @@ Clone the project
 After running Docker and logging into your account, launch the docker image:
 <!-- TODO -->
 ```bash
-  launch.sh -i jul016/dsc180b-proj2
+  launch.sh -i hiyos/180b:latest
 ```
 
 From there, copy in the directory, change directories into the project and run commands from bash using run.py:
@@ -37,6 +37,7 @@ The build script can be run directly from bash `python run.py`
 | `clean`  | Clears remnents of previous networks or communitiy detection  |
 | `test-data`  | Generates and loads data network from test data  |
 | `data`  | Downloads, extracts, and prepares data network from Kaggle dataset  |
+| `augment`  | Uses Spotify API to collect relevant attributes and genres for accuracy analysis  |
 | `cesna`  | Runs cesna community detection |
 | `test`  | equivilent of running `test-data cesna` |
 | `all`  | equivilent of running `data cesna`  |

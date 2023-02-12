@@ -28,10 +28,7 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 
 
 
-
-
-def pull_kaggle_data(username, key, kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
-
+def pull_kaggle_data(username, key, kaggle_dir, temp_dir, data_dir, test_data_dir, test_data_filename, raw_data_filename, temp_pickle_graph_filename):
 
     if os.path.exists(data_dir + raw_data_filename):
         print("Raw data already downloaded from Kaggle! Moving on to next step")
@@ -44,9 +41,9 @@ def pull_kaggle_data(username, key, kaggle_dir, temp_dir, data_dir, raw_data_fil
         print("kaggle data downloaded")
 
 
-def read_in_csv(username, key, kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
+def read_in_csv(username, key, kaggle_dir, temp_dir, data_dir, test_data_dir, test_data_filename, raw_data_filename, temp_pickle_graph_filename):
     if os.path.exists(temp_dir + temp_pickle_graph_filename):
-        print("Kaggle data already prepared for analysis! Moving on to next step")
+        print("Kaggle data already made into networkX data! Moving on to next step")
     else:
         n = 4
         df = pd.read_csv(os.path.join(data_dir, raw_data_filename),
@@ -54,3 +51,12 @@ def read_in_csv(username, key, kaggle_dir, temp_dir, data_dir, raw_data_filename
                         lineterminator='\n',
                         header=0)
         df.columns = [x.replace('"', '').lstrip() for x in df.columns]
+        return df
+    
+def create_test_sample(df, test_data_dir, test_data_filename):
+    np.random.seed(0)
+    playlists = df['playlistname'].unique()
+    sample_playlists = np.random.choice(playlists, 1000, replace=False)
+    sampled_df = df[df['playlistname'].isin(sample_playlists)]
+    sampled_df.to_csv(os.path.join(test_data_dir, test_data_filename))
+    return sampled_df

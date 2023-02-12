@@ -5,8 +5,9 @@ import json
 
 sys.path.insert(0, 'src')
 
+# SRC PY FILE IMPORTS
 from clean import clean
-from kaggle_data import pull_kaggle_data, read_in_csv
+from kaggle_data import pull_kaggle_data, read_in_csv, create_test_sample
 # from test import generate_network
 
 
@@ -23,11 +24,21 @@ def main(targets):
         clean()
 
     if ('data' in targets) or ('kaggle' in targets):
+        print("This will download kaggle spotify data")
+        with open('config/kaggle.json') as fh:
+            kaggle_config = json.load(fh)
+        pull_kaggle_data(**kaggle_config)
+        df = read_in_csv(**kaggle_config)
+    
+    if ('test-data' in targets):
         print("This will download kaggle spotify data (test)")
         with open('config/kaggle.json') as fh:
             kaggle_config = json.load(fh)
         pull_kaggle_data(**kaggle_config)
-        read_in_csv(**kaggle_config)
+        df = read_in_csv(**kaggle_config)
+        if df is not None:
+            test_df = create_test_sample(df, kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])
+            print("test df created!")
         
 
         
