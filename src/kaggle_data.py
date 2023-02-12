@@ -1,12 +1,19 @@
 import sqlite3
 import os
 import os.path
+import json
 import itertools
 import pickle
 import pandas as pd
 import networkx as nx
 import numpy as np
+
+with open('config/kaggle.json') as fh:
+    kaggle_config = json.load(fh)
+os.environ['KAGGLE_USERNAME']=kaggle_config["username"]
+os.environ['KAGGLE_KEY']=kaggle_config["key"]
 from kaggle.api.kaggle_api_extended import KaggleApi
+
 
 # import matplotlib.pyplot as plt
 #from matplotlib import pylab
@@ -21,13 +28,10 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 
 
 
-from kaggle.api.kaggle_api_extended import KaggleApi
 
 
 def pull_kaggle_data(username, key, kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
 
-    os.environ['KAGGLE_USERNAME']=username
-    os.environ['KAGGLE_KEY']=key
 
     if os.path.exists(data_dir + raw_data_filename):
         print("Raw data already downloaded from Kaggle! Moving on to next step")

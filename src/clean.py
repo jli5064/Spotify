@@ -1,7 +1,7 @@
 import os
 
 def clean():
-    folders = ["kaggle", "aicrowd"]
+    folders = ["test","kaggle", "aicrowd"]
     subfolders = ["raw", "temp", "out"]
     empty = True
     for folder in folders:
