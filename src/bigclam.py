@@ -75,6 +75,9 @@ def correct_pred(pred, genres, nodes):
     return total
 
 def eval(G, genres):
+    F, ll = train(A, 3)
+    pred = np.argmax(F, 1)
+    
     nodes = list(G.nodes())
     one = [nodes[i] for i in np.where(pred == 0)[0]]
     two = [nodes[i] for i in np.where(pred == 1)[0]]
