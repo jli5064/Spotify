@@ -1,7 +1,0 @@
-{
-    "kaggle_dir": "andrewmvd/spotify-playlists",
-    "temp_dir": "data/spotify/temp/",
-    "data_dir": "data/spotify/raw/",
-    "raw_data_filename": "spotify_dataset.csv",
-    "temp_pickle_graph_filename": ""
-}

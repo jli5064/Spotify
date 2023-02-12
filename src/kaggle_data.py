@@ -1,13 +1,15 @@
 import sqlite3
 import os
 import os.path
+import itertools
 import pickle
 import pandas as pd
 import networkx as nx
 import numpy as np
-import matplotlib.pyplot as plt
+from kaggle.api.kaggle_api_extended import KaggleApi
+
+# import matplotlib.pyplot as plt
 #from matplotlib import pylab
-import itertools
 
 
 # kaggle datasets download -d andrewmvd/spotify-playlists
@@ -38,7 +40,7 @@ def pull_kaggle_data(username, key, kaggle_dir, temp_dir, data_dir, raw_data_fil
         print("kaggle data downloaded")
 
 
-def read_raw_sql(username, key, kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
+def read_in_csv(username, key, kaggle_dir, temp_dir, data_dir, raw_data_filename, temp_pickle_graph_filename):
     if os.path.exists(temp_dir + temp_pickle_graph_filename):
         print("Kaggle data already prepared for analysis! Moving on to next step")
     else:

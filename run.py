@@ -2,12 +2,12 @@
 
 import sys
 import json
-import networkx as nx
 
 sys.path.insert(0, 'src')
 
 from clean import clean
-from kaggle import pull_kaggle_data, read_raw_sql
+from kaggle_data import pull_kaggle_data, read_in_csv
+# from test import generate_network
 
 
 def main(targets):
@@ -19,8 +19,8 @@ def main(targets):
     
     # model_test = False
     
-    # if 'clean' in targets:
-    #     clean()
+    if 'clean' in targets:
+        clean()
     
     # if 'test' in targets:
     #     targets.extend(["test-data", "spectral"])
@@ -43,9 +43,9 @@ def main(targets):
     if ('data' in targets) or ('kaggle' in targets):
         print("This will download kaggle spotify data (test)")
         with open('config/kaggle.json') as fh:
-            spotify_etl_config = json.load(fh)
-        pull_kaggle_data(**spotify_etl_config)
-        read_raw_sql(**spotify_etl_config)
+            kaggle_config = json.load(fh)
+        pull_kaggle_data(**kaggle_config)
+        read_in_csv(**kaggle_config)
         
         
     # if 'spectral' in targets:

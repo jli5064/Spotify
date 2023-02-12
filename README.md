@@ -1,5 +1,5 @@
 # DSC 180B [WI 23] Project 2:<br> Finding Artist Genres Through Playlist Data
-***Classifying Spotify Artists through Community Detection and Clustering ***
+*** Classifying Spotify Artists through Community Detection and Clustering ***
 
 <!--This site was built using [GitHub Pages](https://pages.github.com/).-->
 This data 
@@ -37,10 +37,10 @@ The build script can be run directly from bash `python run.py`
 | `clean`  | Clears remnents of previous networks or communitiy detection  |
 | `test-data`  | Generates and loads data network from test data  |
 | `data`  | Downloads, extracts, and prepares data network from Kaggle dataset  |
-<!--| `aicrowd`  | Downloads, extracts, and prepares data network from aicrowd Spotify dataset  |-->
 | `cesna`  | Runs cesna community detection |
-| `test`  | equivilent of running `test-data cesna`
+| `test`  | equivilent of running `test-data cesna` |
 | `all`  | equivilent of running `data cesna`  |
+<!--| `aicrowd`  | Downloads, extracts, and prepares data network from aicrowd Spotify dataset  |-->
 
 ## Authors
 
