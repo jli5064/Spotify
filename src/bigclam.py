@@ -87,5 +87,20 @@ def eval(G, genres):
     total = 0
     for i in [one, two, three]:
         total += correct_pred(i, genres, nodes)
+        
+    ################ 
+    #if you want to save the prediction graph to pdf
+    ################
+    #print("saving prediction graph")
+    #plt.figure(num=None, figsize=(50, 50), dpi=100)
+    #plt.axis('off')
+    #fig = plt.figure(1)
+
+    #pos = nx.spring_layout(G, seed=22)
+    #nx.draw(G, pos = pos, node_color=pred)
+    #with open(file_name, 'w') as fp:
+        #pass
+    #plt.savefig(file_name,bbox_inches="tight")
+    #del fig
     
-    return total/len(nodes), pred
+    return total/len(nodes)
