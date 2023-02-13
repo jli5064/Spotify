@@ -15,9 +15,9 @@ Clone the project
   git clone https://github.com/darehunt/DSC180B-Project2
 ```
 
-After running Docker and logging into your account, pull and launch the docker image:
+After running Docker and logging into your account, pull and launch the docker image: (note that this requires more RAM than the usual to run)
 ```bash
-  launch.sh -i anmokhta/DSC180B-proj2:latest
+  launch.sh -i anmokhta/DSC180B-proj2:latest -m 32
 ```
 
 From there, copy in the directory, change directories into the project and run commands from bash using run.py:
