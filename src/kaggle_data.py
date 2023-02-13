@@ -50,12 +50,15 @@ def read_in_csv(username, key, kaggle_dir, temp_dir, data_dir, test_data_dir, te
                         usecols=range(n),
                         lineterminator='\n',
                         header=0)
-        df.columns = [x.replace('"', '').lstrip() for x in df.columns]
         print("kaggle data loaded")
+        df.columns = [x.replace('"', '').lstrip() for x in df.columns]
+
+
+        print("kaggle data cleaned")
         return df
     
 def create_test_sample(df, test_data_dir, test_data_filename):
-    if os.path.exists(test_data_dir, test_data_filename):
+    if os.path.exists(test_data_dir + test_data_filename):
         print("Sample data already created! Moving on to next step")
     else:
         np.random.seed(0)
