@@ -1,8 +1,10 @@
 import os
 
+folders = ["test","kaggle", "aicrowd"]
+subfolders = ["raw", "temp", "out"]
+
+
 def clean():
-    folders = ["test","kaggle", "aicrowd"]
-    subfolders = ["raw", "temp", "out"]
     empty = True
     for folder in folders:
         for subfolder in subfolders:
@@ -20,3 +22,11 @@ def clean():
                         print('Failed to find folder. Reason: %s' % (e))
     if empty:
         print("No files to delete! 'data' directory empty!")
+
+def make_data_dir():
+     print("Dir!")
+     for folder in folders:
+        for subfolder in subfolders:
+            currdir = os.path.join("data", folder, subfolder)
+            if not os.path.exists(currdir):
+                os.makedirs(currdir)

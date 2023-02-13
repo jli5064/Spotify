@@ -12,20 +12,20 @@ WIP
 Clone the project
 
 ```bash
-  git clone https://github.com/darehunt/DSC180A-Project2
+  git clone https://github.com/darehunt/DSC180B-Project2
 ```
 
-After running Docker and logging into your account, launch the docker image:
+After running Docker and logging into your account, pull and launch the docker image:
 <!-- TODO -->
 ```bash
-  launch.sh -i hiyos/180b:latest
+  launch.sh -i anmokhta/DSC180B-proj2:latest
 ```
 
 From there, copy in the directory, change directories into the project and run commands from bash using run.py:
 
 ```bash
-  cp DSC180A-Project2 .
-  cd DSC180A-Project2
+  cp DSC180B-Project2 .
+  cd DSC180B-Project2
   python run.py test
 ```
 ## Commands
