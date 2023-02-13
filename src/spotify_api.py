@@ -33,6 +33,7 @@ def get_artist_genres(access, artist_names):
         # print(params)
         # Send a GET request to the API endpoint
         response = requests.get(endpoint, headers=headers, params=params)
+        i += 1
         print(response, i)
         # Parse the response as JSON
         data = json.loads(response.text)
