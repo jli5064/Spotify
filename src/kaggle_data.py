@@ -1,9 +1,6 @@
-import sqlite3
 import os
 import os.path
 import json
-import itertools
-import pickle
 import pandas as pd
 import networkx as nx
 import numpy as np
@@ -28,25 +25,26 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 
 
 
-def pull_kaggle_data(username, key, kaggle_dir, temp_dir, data_dir, test_data_dir, test_data_filename, raw_data_filename, temp_pickle_graph_filename):
+def pull_kaggle_data():
+        # username, key, kaggle_dir, temp_dir, data_dir, test_data_dir, test_data_filename, raw_data_filename, temp_pickle_graph_filename
 
-    if os.path.exists(data_dir + raw_data_filename):
+    if os.path.exists(kaggle_config["data_dir"] + kaggle_config["raw_data_filename"]):
         print("Raw data already downloaded from Kaggle! Moving on to next step")
     else:
         kapi = KaggleApi()
         kapi.authenticate()
 
-        print(kapi.dataset_list_files(kaggle_dir).files)
-        kapi.dataset_download_files(kaggle_dir, path=data_dir, quiet=False, unzip=True)
+        print(kapi.dataset_list_files(kaggle_config["kaggle_dir"]).files)
+        kapi.dataset_download_files(kaggle_config["kaggle_dir"], path=kaggle_config["data_dir"], quiet=False, unzip=True)
         print("kaggle data downloaded")
 
 
-def read_in_csv(username, key, kaggle_dir, temp_dir, data_dir, test_data_dir, test_data_filename, raw_data_filename, temp_pickle_graph_filename):
-    if os.path.exists(temp_dir + temp_pickle_graph_filename):
+def read_in_csv():
+    if os.path.exists(kaggle_config["temp_dir"] + kaggle_config["temp_pickle_graph_filename"]):
         print("Kaggle data already made into networkX data! Moving on to next step")
     else:
         n = 4
-        df = pd.read_csv(os.path.join(data_dir, raw_data_filename),
+        df = pd.read_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["raw_data_filename"]),
                         usecols=range(n),
                         lineterminator='\n',
                         header=0)
@@ -69,3 +67,28 @@ def create_test_sample(df, test_data_dir, test_data_filename):
         print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
         sampled_df.to_csv(os.path.join(test_data_dir, test_data_filename))
         return sampled_df
+
+def filter_dataset(df):
+    appearances = df.groupby('artistname').agg({'trackname':'count', 'playlistname':lambda x: len(x.unique())})
+    #appearances.sort_values(by=['trackname', 'playlistname'])
+
+    artists = appearances[appearances['playlistname']>=10].index
+    print('# of artists on >= 10 playlists (sample):', len(artists))
+
+    df1 = df[df['artistname'].isin(artists)]
+
+    df1_grped = df1.groupby('playlistname').agg({'artistname':lambda x: len(x.unique())})
+    playlists = df1_grped[df1_grped['artistname'] > 1].index
+    df2 = df1[df1['playlistname'].isin(playlists)]
+    return df2
+
+
+def get_artist_weight(artist, g):
+    weight_dict = {}
+    node_weights = nx.get_edge_attributes(g, "weight")
+    for i in node_weights:
+        if artist in i:
+            weight_dict[i] = node_weights[i]
+    return sorted(weight_dict.items(), key=lambda x:x[1], reverse=True)
+
+
