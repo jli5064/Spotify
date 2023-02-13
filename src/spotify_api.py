@@ -39,7 +39,7 @@ def get_artist_genres(access, artist_names):
         # Append the artist's genres to the list of genres
         result = data["artists"]["items"]
         if len(result) > 0:
-            artist_genres[artist_name] = result[0]['genres']
+            artist_genres[artist_name] = result[0]['genres'].strip()
     return artist_genres
 
 def get_spotify_genres(access_token, artists):

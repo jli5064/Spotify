@@ -90,8 +90,7 @@ def filter_dataset(df):
 def get_artist_list(grouped_df):
     artists = set()
     for i in range(len(grouped_df)):
-        art_list_str = grouped_df.iloc[i]['artistname']
-        art_list = art_list_str.strip('][').strip().split(' ')
+        art_list = grouped_df.iloc[i]['artistname']
         for j in art_list:
             artists.add(j.lower())
     return artists

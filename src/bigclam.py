@@ -68,10 +68,13 @@ def correct_pred(pred, genres, nodes):
     total = 0
     for i in range(len(pred)):
         for j in range(len(pred)):
-            if i != j:
-                if len(set(genres[pred[i].lower()]).intersection(set(genres[pred[j].lower()]))) > 0:
-                    total += 1
-                    break
+            try:
+                if i != j:
+                    if len(set(genres[pred[i].lower()]).intersection(set(genres[pred[j].lower()]))) > 0:
+                        total += 1
+                        break
+            except:
+                continue
     return total
 
 def eval(G, genres):
