@@ -27,14 +27,17 @@ def kaggle_clean_graph_edges(g, wgt_thres = 1):
     return g
 
 
-def dump_graph(graph, filename):
-    pickle.dump(graph, open(filename, 'wb'))
-    print(filename + " has been saved!")
+def dump_graph(graph, path):
+    with open(path, 'wb') as f:
+        pickle.dump(graph, f)
+    print(path + " saved!")
+    
 
-def load_graph(filename):
+def load_graph(path):
     try:
-        G = pickle.load(open(filename, 'rb'))
-        print(filename + " has been read!")
+        with open(path, 'rb') as f:  # notice the r instead of w
+            G = pickle.load(f)
+        print(path + " has been read!")
         return G
     except:
         print("Error loading graph! ")

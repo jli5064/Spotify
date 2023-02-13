@@ -87,7 +87,8 @@ def main(targets):
             dir = os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"])
         
         G = load_graph(dir)
-        print(dir + "loaded!")
+        print(dir + " loaded!")
+        print(G)
 
         if model_test:
             dir = os.path.join(kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])   
