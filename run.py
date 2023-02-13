@@ -6,7 +6,7 @@ import json
 sys.path.insert(0, 'src')
 
 # SRC PY FILE IMPORTS
-from clean import clean
+from clean import clean, make_data_dir
 from kaggle_data import pull_kaggle_data, read_in_csv, create_test_sample
 # from test import generate_network
 
@@ -18,10 +18,21 @@ def main(targets):
         `main` runs the targets in order of data=>model.
     '''
     
-    # model_test = False
+    model_test = False
     
+    make_data_dir()
+
     if 'clean' in targets:
         clean()
+
+    if 'test' in targets:
+        print('Adding "test-data", "augment", and "cesna"') 
+        targets.extend(["test-data", "augment", "cesna"])
+        model_test = True
+        
+    if 'all' in targets:
+        print('Adding "data", "augment", and "cesna"') 
+        targets.extend(["data", "augment", "cesna"])
 
     if ('data' in targets) or ('kaggle' in targets):
         print("This will download kaggle spotify data")
@@ -39,6 +50,9 @@ def main(targets):
         if df is not None:
             test_df = create_test_sample(df, kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])
             print("test df created!")
+
+    if 'augment' in targets:
+        print("Pulling necessary information from Spotify! (WIP)")
         
     if 'model' in targets:
         #G = load in the small spotify sample from pickle

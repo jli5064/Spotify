@@ -16,7 +16,6 @@ Clone the project
 ```
 
 After running Docker and logging into your account, pull and launch the docker image:
-<!-- TODO -->
 ```bash
   launch.sh -i anmokhta/DSC180B-proj2:latest
 ```
@@ -39,8 +38,8 @@ The build script can be run directly from bash `python run.py`
 | `data`  | Downloads, extracts, and prepares data network from Kaggle dataset  |
 | `augment`  | Uses Spotify API to collect relevant attributes and genres for accuracy analysis  |
 | `cesna`  | Runs cesna community detection |
-| `test`  | equivilent of running `test-data cesna` |
-| `all`  | equivilent of running `data cesna`  |
+| `test`  | equivilent of running `test-data augment cesna` |
+| `all`  | equivilent of running `data augment cesna`  |
 <!--| `aicrowd`  | Downloads, extracts, and prepares data network from aicrowd Spotify dataset  |-->
 
 ## Authors
