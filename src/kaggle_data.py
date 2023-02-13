@@ -87,14 +87,10 @@ def filter_dataset(df):
     df2 = df1[df1['playlistname'].isin(playlists)]
     return df2
 
-def get_artist_list(grouped_df):
-    artists = set()
-    for i in range(len(grouped_df)):
-        art_list = grouped_df.iloc[i]['artistname']
-        for j in art_list:
-            artists.add(j.lower())
-    return artists
-
+def get_artist_list(df_dir):
+    df = pd.read_csv(df_dir)
+    return df['artistname'].unique()
+    
 
 def get_artist_weight(artist, g):
     weight_dict = {}

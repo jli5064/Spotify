@@ -80,27 +80,32 @@ def main(targets):
         #genres = pull genres from artist sample
         with open('config/spotify_api.json') as fh:
             spotify_config = json.load(fh)
-        if model_test:
-            grouped_df = read_in_temp_csv(os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "group_df_filename"]))
-        else:
-            grouped_df = read_in_temp_csv(os.path.join(kaggle_config["temp_dir"], kaggle_config[ "group_df_filename"]))
-        
-        artists = get_artist_list(grouped_df)
-        # print(artists)
-        print("collected unique artist list! Using Spotify Web API to collect genre information")
-        access_token = get_access_token()
-        genres = get_spotify_genres(access_token, artists)
-        print("genre information loaded! Loading pickle graph")
-        print(genres)
 
         if model_test:
-            dir = os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"])
-            
+            dir = os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"])   
         else:
             dir = os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"])
         
         G = load_graph(dir)
         print(dir + "loaded!")
+
+        if model_test:
+            dir = os.path.join(kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])   
+        else:
+            dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
+
+        artists = get_artist_list(dir)
+
+        # print(artists)
+        print("collected unique artist list! Using Spotify Web API to collect genre information")
+
+        
+        access_token = get_access_token()
+        genres = get_spotify_genres(access_token, artists)
+        print("genre information loaded! Loading pickle graph")
+        print(genres)
+
+
 
         print("running model, calculating accuracy")
         acc = eval(G, genres)
