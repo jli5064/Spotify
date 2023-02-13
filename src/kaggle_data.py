@@ -51,13 +51,18 @@ def read_in_csv(username, key, kaggle_dir, temp_dir, data_dir, test_data_dir, te
                         lineterminator='\n',
                         header=0)
         df.columns = [x.replace('"', '').lstrip() for x in df.columns]
+        print("kaggle data loaded")
         return df
     
 def create_test_sample(df, test_data_dir, test_data_filename):
-    np.random.seed(0)
-    playlists = df['playlistname'].unique()
-    sample_playlists = np.random.choice(playlists, 1000, replace=False)
-    sampled_df = df[df['playlistname'].isin(sample_playlists)]
-    print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
-    sampled_df.to_csv(os.path.join(test_data_dir, test_data_filename))
-    return sampled_df
+    if os.path.exists(test_data_dir, test_data_filename):
+        print("Sample data already created! Moving on to next step")
+    else:
+        np.random.seed(0)
+        playlists = df['playlistname'].unique()
+        print("picking sample playlists")
+        sample_playlists = np.random.choice(playlists, 1000, replace=False)
+        sampled_df = df[df['playlistname'].isin(sample_playlists)]
+        print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
+        sampled_df.to_csv(os.path.join(test_data_dir, test_data_filename))
+        return sampled_df

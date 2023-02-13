@@ -24,7 +24,6 @@ def clean():
         print("No files to delete! 'data' directory empty!")
 
 def make_data_dir():
-     print("Dir!")
      for folder in folders:
         for subfolder in subfolders:
             currdir = os.path.join("data", folder, subfolder)
