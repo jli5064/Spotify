@@ -67,11 +67,11 @@ def main(targets):
             print("test df created!")
         else:
             print("sampled data already exists")
-        filtered_df = filter_dataset(df)
-        print("test dataframe filtered")
-        G = kaggle_generate_graph(filtered_df, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "group_df_filename"]))
+        G = kaggle_generate_graph(df, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "group_df_filename"]))
+        print(G)
         print("graph properly generated")
         cleaned_G = kaggle_clean_graph_edges(G)
+        print(cleaned_G)
         print("graph edges trimmed")
         dump_graph(cleaned_G, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"]))
 
@@ -111,7 +111,7 @@ def main(targets):
 
         print("running model, calculating accuracy")
         acc = eval(G, genres)
-        print("Acuracy score of " + acc)
+        print("Acuracy score of " + str(acc))
         
         
 if __name__ == '__main__':

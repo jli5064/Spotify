@@ -59,23 +59,10 @@ def read_in_temp_csv(fn):
     df = pd.read_csv(fn)
     print("grouped data loaded")
     return df
-    
-def create_test_sample(df, test_data_dir, test_data_filename):
-    if os.path.exists(test_data_dir + test_data_filename):
-        print("Sample data already created! Moving on to next step")
-    else:
-        np.random.seed(0)
-        playlists = df['playlistname'].unique()
-        print("picking sample playlists")
-        sample_playlists = np.random.choice(playlists, 50, replace=False)
-        sampled_df = df[df['playlistname'].isin(sample_playlists)]
-        print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
-        sampled_df.to_csv(os.path.join(test_data_dir, test_data_filename))
-        return sampled_df
 
 def filter_dataset(df):
     appearances = df.groupby('artistname').agg({'trackname':'count', 'playlistname':lambda x: len(x.unique())})
-    #appearances.sort_values(by=['trackname', 'playlistname'])
+    print(appearances.sort_values(by=['trackname', 'playlistname']))
 
     artists = appearances[appearances['playlistname']>=10].index
     print('# of artists on >= 10 playlists (sample):', len(artists))
@@ -85,7 +72,23 @@ def filter_dataset(df):
     df1_grped = df1.groupby('playlistname').agg({'artistname':lambda x: len(x.unique())})
     playlists = df1_grped[df1_grped['artistname'] > 1].index
     df2 = df1[df1['playlistname'].isin(playlists)]
+    print("dataframe filtered")
     return df2
+    
+def create_test_sample(df, test_data_dir, test_data_filename):
+    if os.path.exists(test_data_dir + test_data_filename):
+        print("Sample data already created! Moving on to next step")
+    else:
+        np.random.seed(0)
+        playlists = df['playlistname'].unique()
+        print("picking sample playlists")
+        sample_playlists = np.random.choice(playlists, 1000, replace=False)
+        sampled_df = df[df['playlistname'].isin(sample_playlists)]
+        filtered_df = filter_dataset(sampled_df)
+        print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
+        filtered_df.to_csv(os.path.join(test_data_dir, test_data_filename))
+        return filtered_df
+
 
 def get_artist_list(df_dir):
     df = pd.read_csv(df_dir)
