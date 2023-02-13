@@ -89,7 +89,7 @@ def filter_dataset(df):
 
 def get_artist_list(df_dir):
     df = pd.read_csv(df_dir)
-    return list(df['artistname'].unique().str.lower())
+    return list(df['artistname'].apply(lambda x: x.lower()).unique())
     
 
 def get_artist_weight(artist, g):
