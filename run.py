@@ -95,7 +95,7 @@ def main(targets):
             dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
 
         artists = get_artist_list(dir)
-        print(len(artists) + " unique artists")
+        print(str(len(artists)) + " unique artists")
 
         # print(artists)
         print("collected unique artist list! Using Spotify Web API to collect genre information")
