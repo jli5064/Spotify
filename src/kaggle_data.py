@@ -39,7 +39,7 @@ def pull_kaggle_data():
         print("kaggle data downloaded")
 
 
-def read_in_csv():
+def read_in_raw_csv():
     if os.path.exists(kaggle_config["temp_dir"] + kaggle_config["temp_pickle_graph_filename"]):
         print("Kaggle data already made into networkX data! Moving on to next step")
     else:
@@ -54,6 +54,11 @@ def read_in_csv():
 
         print("kaggle data cleaned")
         return df
+    
+def read_in_temp_csv(fn):
+    df = pd.read_csv(fn)
+    print("grouped data loaded")
+    return df
     
 def create_test_sample(df, test_data_dir, test_data_filename):
     if os.path.exists(test_data_dir + test_data_filename):
@@ -81,6 +86,15 @@ def filter_dataset(df):
     playlists = df1_grped[df1_grped['artistname'] > 1].index
     df2 = df1[df1['playlistname'].isin(playlists)]
     return df2
+
+def get_artist_list(grouped_df):
+    artists = set()
+    for i in range(len(grouped_df)):
+        art_list_str = grouped_df.iloc[i]['artistname']
+        art_list = art_list_str.strip('][').strip().split(' ')
+        for j in art_list:
+            artists.add(j.lower())
+    return artists
 
 
 def get_artist_weight(artist, g):

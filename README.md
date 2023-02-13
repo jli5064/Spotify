@@ -36,10 +36,9 @@ The build script can be run directly from bash `python run.py`
 | `clean`  | Clears remnents of previous networks or communitiy detection  |
 | `test-data`  | Generates and loads data network from test data  |
 | `data`  | Downloads, extracts, and prepares data network from Kaggle dataset  |
-| `augment`  | Uses Spotify API to collect relevant attributes and genres for accuracy analysis  |
-| `cesna`  | Runs cesna community detection |
-| `test`  | equivilent of running `test-data augment cesna` |
-| `all`  | equivilent of running `data augment cesna`  |
+| `model`  | Runs community detection to attempt to group artists by genre |
+| `test`  | equivilent of running `test-data model` |
+| `all`  | equivilent of running `data model`  |
 <!--| `aicrowd`  | Downloads, extracts, and prepares data network from aicrowd Spotify dataset  |-->
 
 ## Authors

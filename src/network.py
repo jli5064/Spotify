@@ -8,11 +8,11 @@ def read_edge(gph, n0, n1):
     else:
         gph.add_edge(n0, n1, weight=1)
 
-def kaggle_generate_graph(df):
+def kaggle_generate_graph(df, temp_group_dir):
     G = nx.Graph()
     # if not unique, could weight the number of times the artist appears in that playlist
     df_grp = df.groupby('playlistname').agg({'artistname': lambda x: (x).unique()})
-
+    df_grp.to_csv(temp_group_dir)
     for i in range(len(df_grp)):
         
         for a in (df_grp.iloc[i]):

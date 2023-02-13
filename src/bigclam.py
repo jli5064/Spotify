@@ -77,8 +77,9 @@ def correct_pred(pred, genres, nodes):
 def eval(G, genres):
     A = nx.to_numpy_array(G)
     F, ll = train(A, 3)
+    print("training completed")
     pred = np.argmax(F, 1)
-    
+    print("predictions completed")
     nodes = list(G.nodes())
     one = [nodes[i] for i in np.where(pred == 0)[0]]
     two = [nodes[i] for i in np.where(pred == 1)[0]]
