@@ -67,7 +67,7 @@ def create_test_sample(df, test_data_dir, test_data_filename):
         np.random.seed(0)
         playlists = df['playlistname'].unique()
         print("picking sample playlists")
-        sample_playlists = np.random.choice(playlists, 1000, replace=False)
+        sample_playlists = np.random.choice(playlists, 50, replace=False)
         sampled_df = df[df['playlistname'].isin(sample_playlists)]
         print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
         sampled_df.to_csv(os.path.join(test_data_dir, test_data_filename))

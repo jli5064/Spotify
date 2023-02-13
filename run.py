@@ -96,10 +96,10 @@ def main(targets):
 
         artists = get_artist_list(dir)
 
-        # print(artists)
+        print(artists)
         print("collected unique artist list! Using Spotify Web API to collect genre information")
 
-        
+
         access_token = get_access_token()
         genres = get_spotify_genres(access_token, artists)
         print("genre information loaded! Loading pickle graph")
