@@ -22,7 +22,7 @@ def get_artist_genres(access, artist_names):
 
     # Create an empty list to store the genres
     artist_genres = {}
-
+    i = 0
     # Iterate over the list of artists
     for artist_name in artist_names:
         # Specify the search parameters
@@ -33,7 +33,7 @@ def get_artist_genres(access, artist_names):
         # print(params)
         # Send a GET request to the API endpoint
         response = requests.get(endpoint, headers=headers, params=params)
-        # print(response)
+        print(response, i)
         # Parse the response as JSON
         data = json.loads(response.text)
         # Append the artist's genres to the list of genres
