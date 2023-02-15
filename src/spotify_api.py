@@ -14,7 +14,4 @@ def get_artist_genres(artist_names):
         if len(result) > 0:
             artist_dict[artist] = result[0]['genres']
     return artist_dict
-
-# def get_spotify_genres(access_token, artists):
-#     genres = get_artist_genres(access_token, artists)
-#     return genres
+    
