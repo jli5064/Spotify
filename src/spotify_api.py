@@ -9,9 +9,8 @@ def get_artist_genres(artist_names):
 
     artist_dict = {}
     
-    for artist in artists:
+    for artist in artist_names:
         result = sp.search(artist, type='artist')['artists']['items']
         if len(result) > 0:
             artist_dict[artist] = result[0]['genres']
     return artist_dict
-    

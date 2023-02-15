@@ -55,17 +55,19 @@ def read_in_raw_csv():
         print("kaggle data cleaned")
         return df
     
-def read_in_temp_csv(fn):
-    df = pd.read_csv(fn)
-    print("grouped data loaded")
-    return df
+# def read_in_temp_csv(fn):
+#     df = pd.read_csv(fn)
+#     print("grouped data loaded")
+#     return df
 
 def filter_dataset(df):
     appearances = df.groupby('artistname').agg({'trackname':'count', 'playlistname':lambda x: len(x.unique())})
-    print(appearances.sort_values(by=['trackname', 'playlistname']))
+    # why are we printing this?
+    # print(appearances.sort_values(by=['trackname', 'playlistname']))
 
     artists = appearances[appearances['playlistname']>=10].index
-    print('# of artists on >= 10 playlists (sample):', len(artists))
+     # or this?
+    # print('# of artists on >= 10 playlists (sample):', len(artists))
 
     df1 = df[df['artistname'].isin(artists)]
 
