@@ -8,9 +8,9 @@ sys.path.insert(0, 'src')
 
 # SRC PY FILE IMPORTS
 from clean import clean, make_data_dir
-from kaggle_data import pull_kaggle_data, read_in_raw_csv, read_in_temp_csv, create_test_sample, filter_dataset, get_artist_list
+from kaggle_data import pull_kaggle_data, read_in_raw_csv, create_test_sample, filter_dataset #get_artist_list, read_in_temp_csv
 from network import kaggle_generate_graph, kaggle_clean_graph_edges, dump_graph, load_graph
-from spotify_api import get_access_token, get_spotify_genres
+from spotify_api import get_artist_genres
 from bigclam import eval
 # from test import generate_network
 
@@ -44,15 +44,17 @@ def main(targets):
             kaggle_config = json.load(fh)
         pull_kaggle_data()
         df = read_in_raw_csv()
+        # we should filter after
         filtered_df = filter_dataset(df)
 
         print("dataframe filtered")
+        # this may be too big to put into a graph?
         G = kaggle_generate_graph(filtered_df, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "group_df_filename"]))
         print("graph properly generated")
         cleaned_G = kaggle_clean_graph_edges(G)
         print("graph edges trimmed")
         dump_graph(cleaned_G, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"]))
-    
+
     if ('test-data' in targets):
         print("This will download kaggle spotify data (test)")
         model_test = True
@@ -95,15 +97,16 @@ def main(targets):
         else:
             dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
 
-        artists = get_artist_list(dir)
-        print(str(len(artists)) + " unique artists")
+
+
+        # artists = get_artist_list(dir)
+        # print(str(len(artists)) + " unique artists")
+        artists = list(G.nodes)
 
         # print(artists)
         print("collected unique artist list! Using Spotify Web API to collect genre information")
 
-
-        access_token = get_access_token()
-        genres = get_spotify_genres(access_token, artists)
+        genres = get_artist_genres(artists)
         print("genre information loaded! Loading pickle graph")
         print(genres)
 

@@ -10,11 +10,11 @@ def read_edge(gph, n0, n1):
 
 def kaggle_generate_graph(df, temp_group_dir):
     G = nx.Graph()
-    # if not unique, could weight the number of times the artist appears in that playlist
+    # this where we also need to implement the node attributes
     df_grp = df.groupby('playlistname').agg({'artistname': lambda x: (x).unique()})
     df_grp.to_csv(temp_group_dir)
     for i in range(len(df_grp)):
-        
+
         for a in (df_grp.iloc[i]):
             for a1, a2 in itertools.combinations(a, 2):
                 read_edge(G, a1, a2)

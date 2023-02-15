@@ -90,9 +90,10 @@ def create_test_sample(df, test_data_dir, test_data_filename):
         return filtered_df
 
 
-def get_artist_list(df_dir):
-    df = pd.read_csv(df_dir)
-    return list(df['artistname'].apply(lambda x: str(x).lower()).unique())
+# don't think we need this
+# def get_artist_list(df_dir):
+#     df = pd.read_csv(df_dir)
+#     return list(df['artistname'].apply(lambda x: str(x).lower()).unique())
     
 
 def get_artist_weight(artist, g):
