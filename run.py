@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# TODO ADD SPOTIFY API TO DOCKER
 
 import sys
 import json
@@ -80,6 +81,9 @@ def main(targets):
     if 'model' in targets:
         #G = load in the small spotify sample from pickle
         #genres = pull genres from artist sample
+        if 'kaggle_config' not in locals():
+            with open('config/kaggle.json') as fh:
+                kaggle_config = json.load(fh)
         with open('config/spotify_api.json') as fh:
             spotify_config = json.load(fh)
 
@@ -92,20 +96,20 @@ def main(targets):
         print(dir + " loaded!")
         print(G)
 
+
+
         if model_test:
             dir = os.path.join(kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])   
         else:
             dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
 
-
-
-        # artists = get_artist_list(dir)
         # print(str(len(artists)) + " unique artists")
         artists = list(G.nodes)
-
         # print(artists)
-        print("collected unique artist list! Using Spotify Web API to collect genre information")
 
+
+
+        print("collected unique artist list! Using Spotify Web API to collect genre information")
         genres = get_artist_genres(artists)
         print("genre information loaded! Loading pickle graph")
         print(genres)
@@ -113,8 +117,9 @@ def main(targets):
 
 
         print("running model, calculating accuracy")
-        acc = eval(G, genres)
+        acc, pred = eval(G, genres)
         print("Acuracy score of " + str(acc))
+        print(pred)
         
         
 if __name__ == '__main__':

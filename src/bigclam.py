@@ -107,4 +107,4 @@ def eval(G, genres):
     #plt.savefig(file_name,bbox_inches="tight")
     #del fig
     
-    return total/len(nodes)
+    return (total/len(nodes), pred)
