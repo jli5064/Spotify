@@ -21,10 +21,10 @@
 title: Spotfy Genre Community Detection
 description: >- # this means to ignore newlines until "baseurl:"
   Identifying Genre Artists using Community Detection
-baseurl: "/DSC180A-Project1/" # the subpath of your site, e.g. /blog
-domain: "anmokhta.github.io"
-url: "https://anmokhta.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-github_username:  anmokhta
+baseurl: "/DSC180A-Project2/" # the subpath of your site, e.g. /blog
+domain: "darehunt.github.io"
+url: "https://darehunt.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
+github_username:  darehunt
 
 
 

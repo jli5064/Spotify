@@ -3,7 +3,7 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 layout: default
-title: Spotfy Genre Community Detection
+title: Spotify Genre Community Detection
 ---
 Recent work introduced the vast unfolding of communities in large networks, in which a heuristic methodology not only identifies communities, but also measures the density between nodes in modules that highlight the strength of a subcommunity. It was shown that such methodology can facilitate community detection, and exceed similar community detection algorithms in time complexity. In this paper, we will focus on deploying an algorithm on a real world dataset, specially the _CESNA_ (Communities from Edge Structure and Node Attributes) algorithm proposed by Jaewon Yang, Julian McAuley, and Jure Leskovec. While our quarter one project focuses only on the node connections in a network, we will account for node features using the _CESNA_ model to improve our prediction accuracy. 
 
