@@ -29,7 +29,7 @@ github_username:  darehunt
 
 
 # Build settings
-theme: jekyll-theme-slate
+theme: slate
 plugins:
   - jekyll-feed
 
