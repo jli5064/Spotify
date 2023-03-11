@@ -19,7 +19,7 @@ def log_likelihood(F, A):
     sum_nedges = np.sum(SECOND_PART)
 
     log_likeli = sum_edges - sum_nedges
-    return log_likeli
+    return -log_likeli
 
 def gradient(F, A, i):
     """Implements equation 3 of
@@ -52,30 +52,55 @@ def train(A, C, iterations = 100):
     # initialize an F
     N = A.shape[0]
     F = np.random.rand(N,C)
-
+    F_new = np.zeros((N,C))
+    X = Att
+    W = np.random.rand(Att.shape[1], C)
+    W_new = np.zeros((Att.shape[1], C))
+    ll = .01
+    ll_new = 0
+    Q = np.zeros((F.shape[0], W.shape[0]))
+    Sanity = np.zeros((F.shape[0], W.shape[0]))
     for n in range(iterations):
-        for person in range(N):
-            grad = gradient(F, A, person)
+        for u in range(Q.shape[0]):
+            for k in range(Q.shape[1]):
+                running_sum = 0
+                for c in range(F.shape[1]):
+                    running_sum += W[k][c] * F[u][c]
+                Q[u][k] = 1/(1+np.exp(-running_sum))
+        
+        for u in range(X.shape[0]):
+            grad = gradient(F, A, u)
+            for c in range(F.shape[1]):
+                running_sum = 0
+                for k in range(X.shape[1]):
+                    running_sum += (X[u][k] - Q[u][k]) * W[k][c]
+                F_new[u][c] = max(.001, F[u][c] + alpha*(running_sum + grad[c]))
+        
+        for k in range(X.shape[1]):
+            for c in range(F.shape[1]):
+                running_sum = 0
+                for u in range(F.shape[0]):
+                    running_sum += (X[u][k] - Q[u][k]) * F[u][c]
+                W_new[k][c] = W[k][c] + alpha * running_sum - alpha * lambda_W * np.sign(W[k][c])
 
-            F[person] += 0.005*grad
+        F = copy.deepcopy(F_new)
+        W = copy.deepcopy(W_new)
+        print(ll)
+        ll_new = log_likelihood(F, A)
+        ll_new += np.sum(np.maximum(.001, X*np.log(np.maximum(.001, Q)) + (1 - X)*np.log(np.maximum(.001, 1 - Q))))
+        change = (ll - ll_new) / ll
+        if abs(change) < .001:
+            break
+        else:
+            ll = ll_new
+    delta = (-np.log(1 - (1/N)))**.5
+    
+    return F, delta, W
 
-            F[person] = np.maximum(0.001, F[person]) # F should be nonnegative
-        ll = log_likelihood(F, A)
-    return F, log_likelihood(F, A)
-#### 
- 
-def correct_pred(pred, genres, nodes):
-    total = 0
-    for i in range(len(pred)):
-        for j in range(len(pred)):
-            try:
-                if i != j:
-                    if len(set(genres[pred[i].lower()]).intersection(set(genres[pred[j].lower()]))) > 0:
-                        total += 1
-                        break
-            except:
-                continue
-    return total
+def remove_edges_below(G, T = 1):
+    F = G.copy()
+    F.remove_edges_from([(n1, n2) for n1, n2, w in F.edges(data="weight") if w < T])
+    return F
 
 def eval(G, genres):
     A = nx.to_numpy_array(G)
