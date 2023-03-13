@@ -102,6 +102,10 @@ def train(A, C, iterations = 100):
     return F, delta, W
 
 
+
+
+
+
 def eval(G, genres):
     A = nx.to_numpy_array(G)
     F, ll = train(A, 3)

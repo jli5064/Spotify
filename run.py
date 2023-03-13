@@ -89,10 +89,12 @@ def main(targets):
         # else:
         #     dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
         G = load_graph(dir)
+        A = (nx.to_numpy_array(graph_without_edges) > 0) * 1
         genres = get_artist_genres(G.nodes)
-
+        iterations = 5
+        F, delta, W = train(A, att, c, iterations)
+        pred1 = np.argmax(F, 1)
         # to do:
-        # - run G through train()
         #     - need to update bigclam.py to make attributes
         # - evaluate results
 
