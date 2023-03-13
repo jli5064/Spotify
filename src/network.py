@@ -4,19 +4,22 @@ import itertools
 import os
 import pandas as pd
 
+# def read_edge(gph, n0, n1):
+#     if gph.has_edge(n0, n1):
+#         gph[n0][n1]['weight'] +=1
+#     else:
+#         gph.add_edge(n0, n1, weight=1)
 def read_edge(gph, n0, n1):
     if gph.has_edge(n0, n1):
         gph[n0][n1]['weight'] +=1
+        return gph[n0][n1]['weight']
     else:
         gph.add_edge(n0, n1, weight=1)
+        return 1
 
 def kaggle_generate_graph(df, temp_group_dir):
     G = nx.Graph()
-    if os.path.exists(temp_group_dir):
-        df_grp = pd.read_csv(temp_group_dir)
-    else:
-        df_grp = df.groupby('playlistname').agg({'artistname': lambda x: (x).unique()})
-        df_grp.to_csv(temp_group_dir)
+    df_grp = df.groupby('playlistname').agg({'artistname': lambda x: (x).unique()})
 
     for i in range(len(df_grp)):
         for a in (df_grp.iloc[i]):

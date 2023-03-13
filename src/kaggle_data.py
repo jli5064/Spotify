@@ -41,12 +41,11 @@ def pull_kaggle_data():
 
 def read_in_raw_csv(fp):
     df = pd.read_csv(fp,
-                    usecols=range(4),#['user_id', 'artistname', 'trackname', 'playlistname'],
+                    usecols=range(4),
                     lineterminator='\n',
                     header=0)
     print("data loaded")
     df.columns = [x.replace('"', '').lstrip() for x in df.columns]
-    print(df)
     return df
     
 

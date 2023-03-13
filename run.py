@@ -55,9 +55,10 @@ def main(targets):
             print("saving sampled data as own file")
             # sample size of 2000 playlists
             df = create_test_sample(2000, df, kaggle_config["data_dir"], kaggle_config["sample_data_filename"])
-            
+
         filtered_df = filter_dataset(df)
         G = kaggle_generate_graph(df, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "group_df_filename"]))
+        
         cleaned_G = kaggle_clean_graph_edges(G)
         dump_graph(cleaned_G, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"]))
 
@@ -82,11 +83,13 @@ def main(targets):
     #     dump_graph(cleaned_G, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"]))
 
     if 'model' in targets:
-        if model_test:
-            dir = os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"])   
-        else:
-            dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
+        dir = os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"])
+        # if model_test:
+        #     dir = os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"])   
+        # else:
+        #     dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
         G = load_graph(dir)
+        print(list(G.nodes))
         genres = get_artist_genres(G.nodes)
 
         # to do:
