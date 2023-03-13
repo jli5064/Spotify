@@ -53,6 +53,7 @@ def main(targets):
             print("test df created!")
         else:
             print("sampled data already exists")
+        print(df.head())
         filtered_df = filter_dataset(df)
         G = kaggle_generate_graph(df, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "group_df_filename"]))
         cleaned_G = kaggle_clean_graph_edges(G)

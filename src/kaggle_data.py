@@ -65,17 +65,14 @@ def filter_dataset(df):
     
 
 def create_test_sample(size, df, test_data_dir, test_data_filename):
-    if os.path.exists(test_data_dir + test_data_filename):
-        print("Sample data already created! Moving on to next step")
-    else:
-        np.random.seed(0)
-        playlists = df['playlistname'].unique()
-        print("picking sample playlists")
-        sample_playlists = np.random.choice(playlists, size, replace=False)
-        sampled_df = df[df['playlistname'].isin(sample_playlists)]
-        filtered_df = filter_dataset(sampled_df)
-        print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
-        filtered_df.to_csv(os.path.join(test_data_dir, test_data_filename))
-        return filtered_df
+    np.random.seed(0)
+    playlists = df['playlistname'].unique()
+    print("picking sample playlists")
+    sample_playlists = np.random.choice(playlists, size, replace=False)
+    sampled_df = df[df['playlistname'].isin(sample_playlists)]
+    filtered_df = filter_dataset(sampled_df)
+    print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
+    filtered_df.to_csv(os.path.join(test_data_dir, test_data_filename))
+    return filtered_df
 
 
