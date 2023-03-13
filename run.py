@@ -50,14 +50,14 @@ def main(targets):
             print("saving sampled data as own file")
             # sample size of 2000 playlists
             df = create_test_sample(2000, df, kaggle_config["data_dir"], kaggle_config["raw_data_filename"])
-            
+
         else:
             print("sampled data already exists")
         print(df.head())
         filtered_df = filter_dataset(df)
         G = kaggle_generate_graph(df, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "group_df_filename"]))
         cleaned_G = kaggle_clean_graph_edges(G)
-        dump_graph(cleaned_G, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "pickle_graph_filename"]))
+        dump_graph(cleaned_G, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"]))
 
     # if ('test-data' in targets):
     #     print("This will download kaggle spotify data (test)")
