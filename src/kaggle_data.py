@@ -39,14 +39,18 @@ def pull_kaggle_data():
         print("kaggle data downloaded")
 
 
-def read_in_raw_csv():
-    n = 4
-    df = pd.read_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["raw_data_filename"]),
-                    usecols=range(n),
+def read_in_raw_csv(fp):
+    # df = pd.read_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["raw_data_filename"]),
+    #                 usecols=['user_id', 'artistname', 'trackname', 'playlistname'],
+    #                 lineterminator='\n',
+    #                 header=0)
+    df = pd.read_csv(fp,
+                    usecols=['user_id', 'artistname', 'trackname', 'playlistname'],
                     lineterminator='\n',
                     header=0)
-    print("kaggle data loaded")
+    print("data loaded")
     df.columns = [x.replace('"', '').lstrip() for x in df.columns]
+    print(df)
     return df
     
 

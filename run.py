@@ -45,15 +45,16 @@ def main(targets):
         with open('config/kaggle.json') as fh:
             kaggle_config = json.load(fh)
         pull_kaggle_data()
-        df = read_in_raw_csv()
-        if df is not None:
-            print("saving sampled data as own file")
-            # sample size of 2000 playlists
-            df = create_test_sample(2000, df, kaggle_config["data_dir"], kaggle_config["raw_data_filename"])
+
+        if os.path.exists(kaggle_config["data_dir"] + kaggle_config["sample_data_filename"]):
+            
 
         else:
-            print("sampled data already exists")
-        print(df.head())
+            df = read_in_raw_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["raw_data_filename"]))
+            print("saving sampled data as own file")
+            # sample size of 2000 playlists
+            df = create_test_sample(2000, df, kaggle_config["data_dir"], kaggle_config["sample_data_filename"])
+
         filtered_df = filter_dataset(df)
         G = kaggle_generate_graph(df, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "group_df_filename"]))
         cleaned_G = kaggle_clean_graph_edges(G)
