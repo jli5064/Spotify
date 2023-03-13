@@ -26,7 +26,6 @@ def main(targets):
     model_test = False
 
     make_data_dir()
-    print(df)
 
     if 'clean' in targets: # works
         clean()
