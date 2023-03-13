@@ -40,12 +40,8 @@ def pull_kaggle_data():
 
 
 def read_in_raw_csv(fp):
-    # df = pd.read_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["raw_data_filename"]),
-    #                 usecols=['user_id', 'artistname', 'trackname', 'playlistname'],
-    #                 lineterminator='\n',
-    #                 header=0)
     df = pd.read_csv(fp,
-                    usecols=['user_id', 'artistname', 'trackname', 'playlistname'],
+                    usecols=range(4),#['user_id', 'artistname', 'trackname', 'playlistname'],
                     lineterminator='\n',
                     header=0)
     print("data loaded")
@@ -76,7 +72,7 @@ def create_test_sample(size, df, test_data_dir, test_data_filename):
     sampled_df = df[df['playlistname'].isin(sample_playlists)]
     filtered_df = filter_dataset(sampled_df)
     print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
-    filtered_df.to_csv(os.path.join(test_data_dir, test_data_filename))
+    filtered_df.to_csv(os.path.join(test_data_dir, test_data_filename), index=False)
     return filtered_df
 
 

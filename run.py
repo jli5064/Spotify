@@ -47,14 +47,15 @@ def main(targets):
         pull_kaggle_data()
 
         if os.path.exists(kaggle_config["data_dir"] + kaggle_config["sample_data_filename"]):
-            
-
+            # if sample csv already exists just read in that
+            df = read_in_raw_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["sample_data_filename"]))
         else:
+            # otherwise read in full dataset and sample
             df = read_in_raw_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["raw_data_filename"]))
             print("saving sampled data as own file")
             # sample size of 2000 playlists
             df = create_test_sample(2000, df, kaggle_config["data_dir"], kaggle_config["sample_data_filename"])
-
+            
         filtered_df = filter_dataset(df)
         G = kaggle_generate_graph(df, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "group_df_filename"]))
         cleaned_G = kaggle_clean_graph_edges(G)
