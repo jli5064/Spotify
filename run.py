@@ -50,7 +50,7 @@ def main(targets):
             print("saving sampled data as own file")
             # sample size of 2000 playlists
             df = create_test_sample(2000, df, kaggle_config["data_dir"], kaggle_config["raw_data_filename"])
-            print("test df created!")
+            
         else:
             print("sampled data already exists")
         print(df.head())
