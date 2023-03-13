@@ -22,7 +22,7 @@ def main(targets):
         targets must contain: 'data', 'model'.
         `main` runs the targets in order of data=>model.
     '''
-    
+    # print(os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"]))
     model_test = False
 
     make_data_dir()
@@ -40,7 +40,7 @@ def main(targets):
         targets.extend(["data", "model"])
 
     if ('data' in targets) or ('kaggle' in targets):
-        model_test = True
+        model_test = False
         print("This will download kaggle spotify data")
         with open('config/kaggle.json') as fh:
             kaggle_config = json.load(fh)
@@ -79,38 +79,17 @@ def main(targets):
         dump_graph(cleaned_G, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"]))
 
     if 'model' in targets:
-        G = load_graph(os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"]))
-        genres = get_artist_genres(df)
+        if model_test:
+            dir = os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"])   
+        else:
+            dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
+        G = load_graph(dir)
+        genres = get_artist_genres(G.nodes)
 
-
-    #     if model_test:
-    #         dir = os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"])   
-    #     else:
-    #         dir = os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"])
-        
-    #     G = load_graph(dir)
-    #     print(dir + " loaded!")
-    #     print(G)
-
-
-
-    #     if model_test:
-    #         dir = os.path.join(kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])   
-    #     else:
-    #         dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
-
-    #     # print(str(len(artists)) + " unique artists")
-    #     artists = list(G.nodes)
-    #     # print(artists)
-
-
-
-    #     print("collected unique artist list! Using Spotify Web API to collect genre information")
-    #     genres = get_artist_genres(artists)
-    #     print("genre information loaded! Loading pickle graph")
-    #     print(genres)
-
-
+        # to do:
+        # - run G through train()
+        #     - need to update bigclam to make attributes
+        # - evaluate results
 
     #     print("running model, calculating accuracy")
     #     acc, pred = eval(G, genres)
