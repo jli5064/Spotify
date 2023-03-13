@@ -10,7 +10,6 @@ def read_edge(gph, n0, n1):
 
 def kaggle_generate_graph(df, temp_group_dir):
     G = nx.Graph()
-    # this where we also need to implement the node attributes
     df_grp = df.groupby('playlistname').agg({'artistname': lambda x: (x).unique()})
     df_grp.to_csv(temp_group_dir)
     for i in range(len(df_grp)):

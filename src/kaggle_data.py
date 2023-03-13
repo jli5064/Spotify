@@ -50,24 +50,13 @@ def read_in_raw_csv():
                         header=0)
         print("kaggle data loaded")
         df.columns = [x.replace('"', '').lstrip() for x in df.columns]
-
-
-        print("kaggle data cleaned")
         return df
     
-# def read_in_temp_csv(fn):
-#     df = pd.read_csv(fn)
-#     print("grouped data loaded")
-#     return df
 
 def filter_dataset(df):
     appearances = df.groupby('artistname').agg({'trackname':'count', 'playlistname':lambda x: len(x.unique())})
-    # why are we printing this?
-    # print(appearances.sort_values(by=['trackname', 'playlistname']))
 
     artists = appearances[appearances['playlistname']>=10].index
-     # or this?
-    # print('# of artists on >= 10 playlists (sample):', len(artists))
 
     df1 = df[df['artistname'].isin(artists)]
 
@@ -77,33 +66,19 @@ def filter_dataset(df):
     print("dataframe filtered")
     return df2
     
-def create_test_sample(df, test_data_dir, test_data_filename):
+
+def create_test_sample(size, df, test_data_dir, test_data_filename):
     if os.path.exists(test_data_dir + test_data_filename):
         print("Sample data already created! Moving on to next step")
     else:
         np.random.seed(0)
         playlists = df['playlistname'].unique()
         print("picking sample playlists")
-        sample_playlists = np.random.choice(playlists, 1000, replace=False)
+        sample_playlists = np.random.choice(playlists, size, replace=False)
         sampled_df = df[df['playlistname'].isin(sample_playlists)]
         filtered_df = filter_dataset(sampled_df)
         print("saving sample to " + os.path.join(test_data_dir, test_data_filename))
         filtered_df.to_csv(os.path.join(test_data_dir, test_data_filename))
         return filtered_df
-
-
-# don't think we need this
-# def get_artist_list(df_dir):
-#     df = pd.read_csv(df_dir)
-#     return list(df['artistname'].apply(lambda x: str(x).lower()).unique())
-    
-
-def get_artist_weight(artist, g):
-    weight_dict = {}
-    node_weights = nx.get_edge_attributes(g, "weight")
-    for i in node_weights:
-        if artist in i:
-            weight_dict[i] = node_weights[i]
-    return sorted(weight_dict.items(), key=lambda x:x[1], reverse=True)
 
 
