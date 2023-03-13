@@ -40,17 +40,14 @@ def pull_kaggle_data():
 
 
 def read_in_raw_csv():
-    if os.path.exists(kaggle_config["temp_dir"] + kaggle_config["temp_pickle_graph_filename"]):
-        print("Kaggle data already made into networkX data! Moving on to next step")
-    else:
-        n = 4
-        df = pd.read_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["raw_data_filename"]),
-                        usecols=range(n),
-                        lineterminator='\n',
-                        header=0)
-        print("kaggle data loaded")
-        df.columns = [x.replace('"', '').lstrip() for x in df.columns]
-        return df
+    n = 4
+    df = pd.read_csv(os.path.join(kaggle_config["data_dir"], kaggle_config["raw_data_filename"]),
+                    usecols=range(n),
+                    lineterminator='\n',
+                    header=0)
+    print("kaggle data loaded")
+    df.columns = [x.replace('"', '').lstrip() for x in df.columns]
+    return df
     
 
 def filter_dataset(df):
