@@ -80,7 +80,7 @@ def main(targets):
 
     if 'model' in targets:
         G = load_graph(os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"]))
-    #     #genres = pull genres from artist sample
+        genres = get_artist_genres(df)
     #     if 'kaggle_config' not in locals():
     #         with open('config/kaggle.json') as fh:
     #             kaggle_config = json.load(fh)

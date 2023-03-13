@@ -1,7 +1,8 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
-def get_artist_genres(artist_names):
+def get_artist_genres(df):
+    artist_names = df['artistname'].unique()
     client_id = '8ac5bd4f29854a4abb37648a5b7833d8'
     client_secret = 'c9f1281a0f774d97ae7d002139e53049'
     client_credentials_manager = SpotifyClientCredentials(client_id, client_secret)
