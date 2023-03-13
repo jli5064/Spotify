@@ -1,6 +1,8 @@
 import pickle
 import networkx as nx
 import itertools
+import os
+import pandas as pd
 
 def read_edge(gph, n0, n1):
     if gph.has_edge(n0, n1):
@@ -10,10 +12,13 @@ def read_edge(gph, n0, n1):
 
 def kaggle_generate_graph(df, temp_group_dir):
     G = nx.Graph()
-    df_grp = df.groupby('playlistname').agg({'artistname': lambda x: (x).unique()})
-    df_grp.to_csv(temp_group_dir)
-    for i in range(len(df_grp)):
+    if os.path.exists(temp_group_dir):
+        df_grp = pd.read_csv(temp_group_dir)
+    else:
+        df_grp = df.groupby('playlistname').agg({'artistname': lambda x: (x).unique()})
+        df_grp.to_csv(temp_group_dir)
 
+    for i in range(len(df_grp)):
         for a in (df_grp.iloc[i]):
             for a1, a2 in itertools.combinations(a, 2):
                 read_edge(G, a1, a2)
