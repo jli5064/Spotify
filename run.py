@@ -24,7 +24,7 @@ def main(targets):
     '''
     
     model_test = False
-    
+
     make_data_dir()
 
     if 'clean' in targets: # works
@@ -49,14 +49,14 @@ def main(targets):
         if df is not None:
             print("saving sampled data as own file")
             # sample size of 2000 playlists
-            df = create_test_sample(2000, df, kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])
+            df = create_test_sample(2000, df, kaggle_config["data_dir"], kaggle_config["data_filename"])
             print("test df created!")
         else:
             print("sampled data already exists")
         filtered_df = filter_dataset(df)
-        G = kaggle_generate_graph(df, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "group_df_filename"]))
+        G = kaggle_generate_graph(df, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "group_df_filename"]))
         cleaned_G = kaggle_clean_graph_edges(G)
-        dump_graph(cleaned_G, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"]))
+        dump_graph(cleaned_G, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "pickle_graph_filename"]))
 
     if ('test-data' in targets):
         print("This will download kaggle spotify data (test)")
@@ -81,11 +81,7 @@ def main(targets):
     if 'model' in targets:
         G = load_graph(os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"]))
         genres = get_artist_genres(df)
-    #     if 'kaggle_config' not in locals():
-    #         with open('config/kaggle.json') as fh:
-    #             kaggle_config = json.load(fh)
-    #     with open('config/spotify_api.json') as fh:
-    #         spotify_config = json.load(fh)
+
 
     #     if model_test:
     #         dir = os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"])   

@@ -97,10 +97,6 @@ def train(A, C, iterations = 100):
     
     return F, delta, W
 
-def remove_edges_below(G, T = 1):
-    F = G.copy()
-    F.remove_edges_from([(n1, n2) for n1, n2, w in F.edges(data="weight") if w < T])
-    return F
 
 def eval(G, genres):
     A = nx.to_numpy_array(G)
@@ -112,6 +108,7 @@ def eval(G, genres):
     one = [nodes[i] for i in np.where(pred == 0)[0]]
     two = [nodes[i] for i in np.where(pred == 1)[0]]
     three = [nodes[i] for i in np.where(pred == 2)[0]]
+    # need to add correct number of groups
     
     total = 0
     for i in [one, two, three]:
