@@ -89,7 +89,6 @@ def main(targets):
         # else:
         #     dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
         G = load_graph(dir)
-        print(list(G.nodes))
         genres = get_artist_genres(G.nodes)
 
         # to do:
