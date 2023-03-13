@@ -12,7 +12,7 @@ from clean import clean, make_data_dir
 from kaggle_data import pull_kaggle_data, read_in_raw_csv, create_test_sample, filter_dataset
 from network import kaggle_generate_graph, kaggle_clean_graph_edges, dump_graph, load_graph
 from spotify_api import get_artist_genres
-from bigclam import eval
+from cesna_model import attribute, train, plot_network, eval
 # from test import generate_network
 
 
@@ -89,13 +89,13 @@ def main(targets):
         # else:
         #     dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
         G = load_graph(dir)
-        A = (nx.to_numpy_array(graph_without_edges) > 0) * 1
+        
         genres = get_artist_genres(G.nodes)
-        iterations = 5
-        F, delta, W = train(A, att, c, iterations)
-        pred1 = np.argmax(F, 1)
+        att = attribute(df, G)
+        
+        eval(G, genres, att, 3)
         # to do:
-        #     - need to update bigclam.py to make attributes
+
         # - evaluate results
 
     #     print("running model, calculating accuracy")

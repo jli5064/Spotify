@@ -1,8 +1,10 @@
 import numpy as np
 import networkx as nx
 import random
+import pandas as pd
+import copy
 
-def attribute(sampled_df):
+def attribute(sampled_df, G):
     att = sampled_df.groupby('artistname').agg({'playlistname':lambda x: len(np.unique(np.array(list(x)))) >= 10}) * 1
     return np.array([pd.Series([node for node in G.nodes]).apply(lambda x: dict(zip(att.index, att.playlistname))[x])]).T
 
@@ -52,7 +54,7 @@ def gradient(F, A, i):
     grad = sum_neigh - sum_nneigh
     return grad
 
-def train(A, C, iterations = 100):
+def train(A, Att, C, iterations = 1, alpha = .005, lambda_W = .001):
     # initialize an F
     N = A.shape[0]
     F = np.random.rand(N,C)
@@ -89,7 +91,6 @@ def train(A, C, iterations = 100):
 
         F = copy.deepcopy(F_new)
         W = copy.deepcopy(W_new)
-        print(ll)
         ll_new = log_likelihood(F, A)
         ll_new += np.sum(np.maximum(.001, X*np.log(np.maximum(.001, Q)) + (1 - X)*np.log(np.maximum(.001, 1 - Q))))
         change = (ll - ll_new) / ll
@@ -101,26 +102,47 @@ def train(A, C, iterations = 100):
     
     return F, delta, W
 
+def plot_network(z):
+    for (node, index) in z:
+        if index == 0:
+            v = {'color': {'r': 255, 'g': 0, 'b': 0, 'a': 1}} # red
+        elif index == 1:
+            v = {'color': {'r': 255, 'g': 165, 'b': 0, 'a': 1}} # orange
+        elif index == 2:
+            v = {'color': {'r': 255, 'g': 255, 'b': 0, 'a': 1}} # yellow
+        elif index == 3:
+            v = {'color': {'r': 0, 'g': 255, 'b': 0, 'a': 1}} # green
+        elif index == 4:
+            v = {'color': {'r': 0, 'g': 255, 'b': 255, 'a': 1}} # cyan
+        elif index == 5:
+            v = {'color': {'r': 0, 'g': 0, 'b': 255, 'a': 1}} # blue
+        else:
+            v = {'color': {'r': 255, 'g': 0, 'b': 255, 'a': 1}} # magenta
+        G.nodes[node]['val'] = v
+    nx.write_gexf(G, "../data/kaggle/out")
+    plot_network(G, node_color = pred1, edge_alpha=0.01, node_border_color = "purple", labels_dict = labels_dict, labels_color="red", save_dir = "../data/kaggle/out")
 
 
 
-
-
-def eval(G, genres):
-    A = nx.to_numpy_array(G)
-    F, ll = train(A, 3)
-    print("training completed")
-    pred = np.argmax(F, 1)
-    print("predictions completed")
-    nodes = list(G.nodes())
-    one = [nodes[i] for i in np.where(pred == 0)[0]]
-    two = [nodes[i] for i in np.where(pred == 1)[0]]
-    three = [nodes[i] for i in np.where(pred == 2)[0]]
-    # need to add correct number of groups
+def eval(G, genres, att, c):
+    A = (nx.to_numpy_array(G) > 0) * 1
+    iterations = 5
+    F, delta, W = train(A, att, c, iterations)
+    pred1 = np.argmax(F, 1)
+    pred_dict = zip(G.nodes, pred1)
+    # F, ll = train(A, 3)
+    # print("training completed")
+    # pred = np.argmax(F, 1)
+    # print("predictions completed")
+    # nodes = list(G.nodes())
+    # one = [nodes[i] for i in np.where(pred == 0)[0]]
+    # two = [nodes[i] for i in np.where(pred == 1)[0]]
+    # three = [nodes[i] for i in np.where(pred == 2)[0]]
+    # # need to add correct number of groups
     
-    total = 0
-    for i in [one, two, three]:
-        total += correct_pred(i, genres, nodes)
+    # total = 0
+    # for i in [one, two, three]:
+    #     total += correct_pred(i, genres, nodes)
         
     ################ 
     #if you want to save the prediction graph to pdf
@@ -137,4 +159,4 @@ def eval(G, genres):
     #plt.savefig(file_name,bbox_inches="tight")
     #del fig
     
-    return (total/len(nodes), pred)
+    return #(total/len(nodes), pred)
