@@ -12,7 +12,7 @@ from clean import clean, make_data_dir
 from kaggle_data import pull_kaggle_data, read_in_raw_csv, create_test_sample, filter_dataset
 from network import kaggle_generate_graph, kaggle_clean_graph_edges, dump_graph, load_graph
 from spotify_api import get_artist_genres
-from cesna_model import attribute, train, plot_network, eval
+from cesna_model import attribute, train, eval
 # from test import generate_network
 
 
@@ -94,8 +94,9 @@ def main(targets):
         att = attribute(df, G)
         
         eval(G, genres, att, 3)
+        
         # to do:
-
+        # - plot
         # - evaluate results
 
     #     print("running model, calculating accuracy")

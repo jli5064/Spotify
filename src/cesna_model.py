@@ -3,6 +3,7 @@ import networkx as nx
 import random
 import pandas as pd
 import copy
+import matplotlib.pyplot as plt
 
 def attribute(sampled_df, G):
     att = sampled_df.groupby('artistname').agg({'playlistname':lambda x: len(np.unique(np.array(list(x)))) >= 10}) * 1
@@ -102,7 +103,36 @@ def train(A, Att, C, iterations = 1, alpha = .005, lambda_W = .001):
     
     return F, delta, W
 
-def plot_network(z):
+
+def plot_network(
+    G,
+    node_color='#1f78b4',
+    node_border_color = None,
+    node_alpha = 0.9,
+    edge_alpha = 0.2,
+    labels_dict = None,
+    labels_size = 16,
+    labels_color=None,
+    save_dir = None
+    ):
+
+    fig = plt.figure(1, figsize=(56, 41), dpi=90)
+    position = nx.kamada_kawai_layout(G) # I like this laylout, and gephi doesnt seem to have it, will look into
+    nx.draw_networkx_nodes(G, position, node_size=2000, node_color=node_color, linewidths=3, edgecolors=node_border_color, alpha=node_alpha)
+    nx.draw_networkx_edges(G, position, width=1.5, alpha=edge_alpha, node_size = 2000)
+    nx.draw_networkx_labels(G, position, labels = labels_dict, font_size = labels_size, font_color=labels_color)    
+    
+    if save_dir:
+        plt.savefig(save_dir)
+
+
+
+def eval(G, genres, att, c):
+    A = (nx.to_numpy_array(G) > 0) * 1
+    iterations = 5
+    F, delta, W = train(A, att, c, iterations)
+    pred1 = np.argmax(F, 1)
+    z = (zip(G.nodes, pred1))
     for (node, index) in z:
         if index == 0:
             v = {'color': {'r': 255, 'g': 0, 'b': 0, 'a': 1}} # red
@@ -118,22 +148,8 @@ def plot_network(z):
             v = {'color': {'r': 0, 'g': 0, 'b': 255, 'a': 1}} # blue
         else:
             v = {'color': {'r': 255, 'g': 0, 'b': 255, 'a': 1}} # magenta
-        G.nodes[node]['val'] = v
-    nx.write_gexf(G, "../data/kaggle/out")
-    plot_network(G, node_color = pred1, edge_alpha=0.01, node_border_color = "purple", labels_dict = labels_dict, labels_color="red", save_dir = "../data/kaggle/out")
-
-
-
-def eval(G, genres, att, c):
-    A = (nx.to_numpy_array(G) > 0) * 1
-    iterations = 5
-    F, delta, W = train(A, att, c, iterations)
-    pred1 = np.argmax(F, 1)
-    pred_dict = zip(G.nodes, pred1)
-    # F, ll = train(A, 3)
-    # print("training completed")
-    # pred = np.argmax(F, 1)
-    # print("predictions completed")
+    G.nodes[node]['val'] = v
+    plot_network(G, node_color = pred1, edge_alpha=0.01, node_border_color = "purple", labels_dict = dict(z), labels_color="red", save_dir = "data/kaggle/out")
     # nodes = list(G.nodes())
     # one = [nodes[i] for i in np.where(pred == 0)[0]]
     # two = [nodes[i] for i in np.where(pred == 1)[0]]
