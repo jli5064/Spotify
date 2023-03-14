@@ -4,6 +4,7 @@
 import sys
 import json
 import os
+import time
 
 sys.path.insert(0, 'src')
 
@@ -25,6 +26,8 @@ def main(targets):
     model_test = False
 
     make_data_dir()
+
+    start = time.time()
 
     if 'clean' in targets: # works
         clean()
@@ -70,7 +73,9 @@ def main(targets):
         
         print("running model, calculating accuracy")
         eval(G, genres, att, 7, df)
-        
+
+    end = time.time()
+    print(end - start)
         
 if __name__ == '__main__':
     # run via:
