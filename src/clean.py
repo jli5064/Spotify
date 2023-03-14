@@ -1,6 +1,6 @@
 import os
 
-folders = ["test","kaggle"]
+folders = ["test","kaggle", "spotify"]
 subfolders = ["raw", "temp", "out"]
 
 

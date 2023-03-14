@@ -22,7 +22,6 @@ def main(targets):
         targets must contain: 'data', 'model'.
         `main` runs the targets in order of data=>model.
     '''
-    # print(os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"]))
     model_test = False
 
     make_data_dir()
@@ -61,26 +60,6 @@ def main(targets):
         
         cleaned_G = kaggle_clean_graph_edges(G)
         dump_graph(cleaned_G, os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"]))
-
-    # if ('test-data' in targets):
-    #     print("This will download kaggle spotify data (test)")
-    #     model_test = True
-
-    #     with open('config/kaggle.json') as fh:
-    #         kaggle_config = json.load(fh)
-    #     pull_kaggle_data()
-    #     df = read_in_raw_csv()
-    #     if df is not None:
-    #         print("saving sampled data as own file")
-    #         df = create_test_sample(df, kaggle_config["test_data_dir"], kaggle_config["test_data_filename"])
-    #         print("test df created!")
-    #     else:
-    #         print("sampled data already exists")
-    #     G = kaggle_generate_graph(df, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "group_df_filename"]))
-    #     print("graph properly generated")
-    #     cleaned_G = kaggle_clean_graph_edges(G)
-    #     print("graph edges trimmed")
-    #     dump_graph(cleaned_G, os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"]))
 
     if 'model' in targets:
         dir = os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"])
