@@ -84,25 +84,13 @@ def main(targets):
 
     if 'model' in targets:
         dir = os.path.join(kaggle_config["temp_dir"], kaggle_config[ "temp_pickle_graph_filename"])
-        # if model_test:
-        #     dir = os.path.join(kaggle_config["test_temp_dir"], kaggle_config[ "test_pickle_graph_filename"])   
-        # else:
-        #     dir = os.path.join(kaggle_config["data_dir"], kaggle_config[ "raw_data_filename"])
         G = load_graph(dir)
         
         genres = get_artist_genres(G.nodes)
         att = attribute(df, G)
         
-        eval(G, genres, att, 3)
-        
-        # to do:
-        # - plot
-        # - evaluate results
-
-    #     print("running model, calculating accuracy")
-    #     acc, pred = eval(G, genres)
-    #     print("Acuracy score of " + str(acc))
-    #     print(pred)
+        print("running model, calculating accuracy")
+        eval(G, genres, att, 7, df)
         
         
 if __name__ == '__main__':

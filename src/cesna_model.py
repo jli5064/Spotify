@@ -104,6 +104,95 @@ def train(A, Att, C, iterations = 1, alpha = .005, lambda_W = .001):
     return F, delta, W
 
 
+def accuracy(G, pred1, sampled_df, main_spotify_dict):
+    pred1_dict = dict(zip(G.nodes(), pred1))
+    pred1_df = sampled_df.assign(prediction = sampled_df['artistname'].map(pred1_dict))
+
+    community_dicts = {}
+    for (i, g) in pred1_df.groupby("prediction"):
+        curr_tabular = g.reset_index()
+        unique_art = list(g.artistname.unique())
+        spotify_info = {a: main_spotify_dict[a] for a in unique_art}
+        artist_count = curr_tabular.groupby("artistname").count()["trackname"]
+        
+        comm_genres = list( main_spotify_dict.values())
+        comm_genre_words = pd.Series(comm_genres).apply(lambda x: sum([z.split() for z in x], []))
+        
+        genre_count = pd.Series(sum(comm_genres, [])).value_counts()
+        genre_word_count = pd.Series(sum(comm_genre_words, [])).value_counts()
+        
+        top_3 = list(genre_count.index[:3])
+        top_3_words = list(genre_word_count.index[:3])
+        
+        top_3_count = sum([any(map(lambda x: x in top_3, a)) for a in comm_genres])
+        top_3_word_count = sum([any(map(lambda x: x in top_3_words, a)) for a in comm_genre_words])
+        
+        top_artists = curr_tabular.groupby("artistname").count()["trackname"].sort_values(ascending=False)[:5]
+        
+        
+        sub = G.subgraph(unique_art)
+    
+    
+    
+    community_dicts[i] = {
+        "n": len(unique_art),
+        "artist_list" : unique_art,
+        "top_artists" : top_artists,
+        "artist_genres": comm_genres,
+        "genre_count": genre_count,
+        "top_genre": genre_count.index[0],
+        "top_3_genres": top_3,
+        "within_top_3": top_3_count,
+        
+        "artist_genres_words": comm_genre_words,
+        "genre_word_count": genre_word_count,
+        "top_genre_word": genre_word_count.index[0],
+        "top_3_genre_words": top_3_words,
+        "within_top_3_words": top_3_word_count,
+        
+        "playlist_list" : list(g.playlistname.unique()),
+        "spotify_info" : spotify_info,
+        "graph": sub,
+        "tabular": g}
+
+
+
+    genre = 0
+    words = 0
+    n = 0
+    for community, info in community_dicts.items():
+        print("Community {}'s most popular genre is {} and genre-word is {}'".format(community, info["top_genre"], info["top_genre_word"]))
+        curr_n = info["n"]
+        print("Community Size: {}".format(curr_n))
+        print(info["top_artists"])
+        
+        curr_genre = info["within_top_3"]
+        curr_words = info["within_top_3_words"]
+        
+                
+        print("\nTop 3 Lists:")
+        print(info["top_3_genres"])
+        print(info["top_3_genre_words"])
+        
+        n += curr_n
+        genre += curr_genre
+        words += curr_words
+        
+        print("\nGenre Accuracy: {}".format(100*curr_genre/curr_n))
+        print("Genre-Word Accuracy: {}".format(100*curr_words/curr_n))
+        
+        
+        
+        
+
+        
+        print("\n\n\n")
+    total_accs = {"genre": 100*genre/n, "words": 100*words/n}
+    print("\nTotal Genre Accuracy: {}".format(total_accs["genre"]))
+    print("Total Genre-Word Accuracy: {}".format(total_accs["words"]))
+    return total_accs
+
+
 def plot_network(
     G,
     node_color='#1f78b4',
@@ -127,7 +216,7 @@ def plot_network(
 
 
 
-def eval(G, genres, att, c):
+def eval(G, genres, att, c, df):
     A = (nx.to_numpy_array(G) > 0) * 1
     iterations = 5
     F, delta, W = train(A, att, c, iterations)
@@ -150,6 +239,8 @@ def eval(G, genres, att, c):
             v = {'color': {'r': 255, 'g': 0, 'b': 255, 'a': 1}} # magenta
     G.nodes[node]['val'] = v
     plot_network(G, node_color = pred1, edge_alpha=0.01, node_border_color = "purple", labels_dict = dict(z), labels_color="red", save_dir = "data/kaggle/out")
+    accuracy(G, pred1, df, genres)
+
     # nodes = list(G.nodes())
     # one = [nodes[i] for i in np.where(pred == 0)[0]]
     # two = [nodes[i] for i in np.where(pred == 1)[0]]
