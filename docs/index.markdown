@@ -19,13 +19,20 @@ To implement the _CESNA_ to our dataset, we had to identify the nodes and attrib
 <center> <img src="img1.png"  width="60%" height="60%"> </center>
 
 
+### The CESNA algorithm infers communities through four assumptions: 
+*   Nodes that belong to the same communities are likely to be connected to each other 
+*   Nodes can belong to multiple communities 
+*   Nodes with more communities in common are more likely to be connected than those with less in common
+*   Nodes in the same community share common attributes
+
+
 <center> <img src="g1.png"  width="40%" height="40%"> </center>
 
-<center> <img src="g2.png"  width="60%" height="60%"> </center>
+<center> <img src="g2.png"  width="40%" height="40%"> </center>
 
-<center> <img src="g3.png"  width="60%" height="60%"> </center>
+<center> <img src="g3.png"  width="80%" height="80%"> </center>
 
-<center> <img src="g4.png"  width="60%" height="60%"> </center>
+<center> <img src="g4.png"  width="80%" height="80%"> </center>
 
 <details>
     <summary> This is a test dropdown </summary>
@@ -87,9 +94,6 @@ if __name__ == '__main__':
 * * *
 
 ### Here is an unordered list:
-
-*   Item foo
-*   Item bar
 
 ### And an ordered list:
 
