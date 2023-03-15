@@ -2,10 +2,10 @@
 *** Classifying Spotify Artists through Community Detection and Clustering ***
 
 <!--This site was built using [GitHub Pages](https://pages.github.com/).-->
-This data 
+
 ## Data Background
 <!-- TODO -->
-Our primary source of data is a dataset of Spotify playlists collected by Andrew Maranhão, which is freely available on Kaggle \href{https://www.kaggle.com/datasets/andrewmvd/spotify-playlists}{(link)}. This dataset was collected using a subset of users who published their #nowplaying tweets via Spotify. This tabular dataset lists a row for each song that was tweeted out, containing the name of the song, the artist of the song, and the playlist that song was playing from. While the data also contained the user IDs of each person who tweeted the track they were listening to, our model does not take personal information as input.
+Our primary source of data is a dataset of Spotify playlists collected by Andrew Maranhão, which is freely available on Kaggle [(link)](https://www.kaggle.com/datasets/andrewmvd/spotify-playlists). This dataset was collected using a subset of users who published their #nowplaying tweets via Spotify. This tabular dataset lists a row for each song that was tweeted out, containing the name of the song, the artist of the song, and the playlist that song was playing from. While the data also contained the user IDs of each person who tweeted the track they were listening to, our model does not take personal information as input.
 
 ## Deployment
 
