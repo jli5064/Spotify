@@ -72,7 +72,7 @@ artists are connected through their appearances in playlists.
 
 ## Methods
 
-On a technical level, in network G, each node has K attributes, and there are C communities in total. The node attributes are represented in a binary matrix as X where X_{u,k} is the k-th attribute of node u. Additionally, we consider a community membership matrix F, where we assume that each node u has a non-negative affiliation weight F_{u,c} ∈ [0, ∞) to community c. If F_{u,c} = 0 then node u does not belong to community c.
+On a technical level, in network G, each node has K attributes, and there are C communities in total. The node attributes are represented in a binary matrix as X where X<sub>u,k</sub> is the k-th attribute of node u. Additionally, we consider a community membership matrix F, where we assume that each node u has a non-negative affiliation weight F<sub>u,c</sub> ∈ [0, ∞) to community c. If F<sub>u,c</sub> = 0 then node u does not belong to community c.
 
 For implementation, the adjacency matrix is constructed from nodes defined to be artists, where an edge is denoted by two artists existing in the same playlist. Our node attribute is constructed by calculating total playlist appearances by artist and identifying the top 25% threshold of appearance count. The attribute is the binary representation of whether that artist's total appearances is above the threshold.
 
@@ -88,8 +88,7 @@ Edges are created from shared community memberships (edges are created if artist
 Each node represented in the community membership matrix F is considered an independent variable which allows a node to belong to multiple communities.
 Each member in community c has independent connections, so those with more communities in common are more likely to be connected than those with less.
 We can predict the value of each node’s attributes based on a node’s community membership.
-The objective function we are trying to solve is then $\hat{F}, \hat{W}$ = argmax $\mathcal{L}(G) + \mathcal{L}(X)$ where $\mathcal{L}(G)$ = $log P(G|F)$ and $\mathcal{L}(X)$ = $log P(X|F, W)$. We break $\mathcal{L}(G)$ and $\mathcal{L}(X)$ into two subproblems by fixing community memberships F and weights W for each node and update F and W at the end of each iteration of gradient ascent.
-
+The objective function we are trying to solve is then F̂, Ŵ = argmax ℒ(G) + ℒ(X) where ℒ(G) = log P(G|F) and ℒ(X) = log P(X|F, W). We break ℒ(G) and ℒ(X) into two subproblems by fixing community memberships F and weights W for each node and update F and W at the end of each iteration of gradient ascent.
 
 ## Results
 
