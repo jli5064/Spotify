@@ -18,6 +18,15 @@ To implement the _CESNA_ to our dataset, we had to identify the nodes and attrib
 
 <center> <img src="img1.png"  width="60%" height="60%"> </center>
 
+
+<center> <img src="g1.png"  width="60%" height="60%"> </center>
+
+<center> <img src="g2.png"  width="60%" height="60%"> </center>
+
+<center> <img src="g3.png"  width="60%" height="60%"> </center>
+
+<center> <img src="g4.png"  width="60%" height="60%"> </center>
+
 <details>
     <summary> This is a test dropdown </summary>
     <br>
