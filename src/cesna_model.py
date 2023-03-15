@@ -4,6 +4,9 @@ import random
 import pandas as pd
 import copy
 import matplotlib.pyplot as plt
+import warnings
+
+warnings.filterwarnings('ignore')
 
 def attribute(sampled_df, G):
     att = sampled_df.groupby('artistname').agg({'playlistname':lambda x: len(np.unique(np.array(list(x)))) >= 10}) * 1
@@ -238,7 +241,7 @@ def plot_network(
 
     fig = plt.figure(1, figsize=(56, 41), dpi=90)
     position = nx.kamada_kawai_layout(G) # I like this laylout, and gephi doesnt seem to have it, will look into
-    nx.draw_networkx_nodes(G, position, node_size=2000, node_color=node_color, linewidths=3, edgecolors=node_border_color, alpha=node_alpha)
+    nx.draw_networkx_nodes(G, position, node_size=1000, node_color=node_color, linewidths=3, edgecolors=node_border_color, alpha=node_alpha)
     nx.draw_networkx_edges(G, position, width=1.5, alpha=edge_alpha, node_size = 2000)
     nx.draw_networkx_labels(G, position, labels = labels_dict, font_size = labels_size, font_color=labels_color)    
     

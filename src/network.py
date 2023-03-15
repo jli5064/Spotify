@@ -4,11 +4,6 @@ import itertools
 import os
 import pandas as pd
 
-# def read_edge(gph, n0, n1):
-#     if gph.has_edge(n0, n1):
-#         gph[n0][n1]['weight'] +=1
-#     else:
-#         gph.add_edge(n0, n1, weight=1)
 def read_edge(gph, n0, n1):
     if gph.has_edge(n0, n1):
         gph[n0][n1]['weight'] +=1
