@@ -5,126 +5,147 @@
 layout: default
 title: Spotify Genre Community Detection
 ---
-Recent work introduced the vast unfolding of communities in large networks, in which a heuristic methodology not only identifies communities, but also measures the density between nodes in modules that highlight the strength of a subcommunity. It was shown that such methodology can facilitate community detection, and exceed similar community detection algorithms in time complexity. In this paper, we will focus on deploying an algorithm on a real world dataset, specially the _CESNA_ (Communities from Edge Structure and Node Attributes) algorithm proposed by Jaewon Yang, Julian McAuley, and Jure Leskovec. While our quarter one project focuses only on the node connections in a network, we will account for node features using the _CESNA_ model to improve our prediction accuracy. 
+Recent work introduced the vast unfolding of community detection in large
+networks, in which a heuristic methodology not only identifies communities,
+but also measures the density between nodes in modules that highlight the
+strength of a subcommunity. It was shown that such clustering methodologies
+can facilitate community detection with the benefits that include exceeding
+other clustering algorithms in time complexity. In this paper, we focus on
+using CESNA (Communities from Edge Structure and Node Attributes) in order
+to combine both methodologies to see if we can categorize music artists by
+genres based on the Spotify playlists they are in. By using a combination of
+the generated network’s edges and the attributes of each artist, CESNA was
+able to construct 7 distinct communities with 53% of artists in each community
+matching the top genres (such as indie-pop) in each respective community and
+82% of artists matching the general genre of each community.
 
 
 ## Introduction
 
 Technological innovations during the past few decades, including the rise of computers, the internet, and social media, have accelerated the size and strength of data networks. When analyzing the data behind various data networks, communities form naturally within them through connections between individual points of data, or nodes. These communities are typically defined by a common variable such as physical location, political alignment, or interest in a public figure. However, as more individual nodes of data are added to the data collection, the number of connections between nodes and the number of communities formed to represent these connections grows exponentially, creating difficult problems to overcome when analyzing the data in a timely manner.
 
-## Methods
 
-To implement the _CESNA_ to our dataset, we had to identify the nodes and attributes we’d be using, and the type communities we expected to detect.  Additionally, we wanted to find a way to validate the communities did indeed have features in common, even though there is no ground truth to this dataset.  We started by deciding we would set our nodes to be artists with edges being a common playlist, our expectation being that nodes would organize themselves into communities of genres.  We can retrieve associated genres through Spotify’s API as a metric of accuracy to compare our closely related nodes to the intersection of genres in the community. We already have all we need to create the edges, but we need the other half of the _CESNA_ algorithm: the node attributes.  Using Spotify’s API we could search on artist names and return a dictionary of attributes defined by Spotify.  However, we ran into a problem: this process took several minutes just to get through 1,000 artists, and our dataset has 290,002 artists.
+Traditional approaches for community detection, such as the planted clique
+problem, have focused on identifying dense subgraphs in the network. However,
+these methods may not be optimal for networks with overlapping communities
+or complex features. This has led to the development of alternative approaches,
+such as CESNA, that leverage additional information beyond the network topology. By considering both edges and features, CESNA can provide a more nuanced understanding of the communities in the network, which is essential for
+many real-world applications.
 
-<center> <img src="img1.png"  width="60%" height="60%"> </center>
 
-
-### The CESNA algorithm infers communities through four assumptions: 
-*   Nodes that belong to the same communities are likely to be connected to each other 
-*   Nodes can belong to multiple communities 
-*   Nodes with more communities in common are more likely to be connected than those with less in common
-*   Nodes in the same community share common attributes
-
+CESNA takes a different approach for detecting communities by using a
+combination of the network architecture as well as the specific features of each
+node. By considering both sources of information from the data independently,
+CESNA is able to better understand and assess which nodes best belong in each
+community. While there do exist other algorithms which take both edges and
+features into account, CESNA is able to outperform them when dealing with
+networks that feature overlapping communities, an important distinction given
+how interconnected some communities can be in networks.
 
 <center> <img src="g1.png"  width="40%" height="40%"> </center>
+<center><h6>
+Two ways of modeling the statistical relationship between a graph G,
+attributes X, and Communities F. Circles represent variables that need to be
+inferred while squares represent observed variables.
+</h6></center>
 
-<center> <img src="g2.png"  width="40%" height="40%"> </center>
 
-<center> <img src="g3.png"  width="80%" height="80%"> </center>
+## Data
+Our primary source of data is a dataset of Spotify playlists collected by
+Andrew Maranh˜ao, which is freely available on Kaggle. This dataset was
+collected using a subset of users who published their nowplaying tweets via
+Spotify. This tabular dataset lists a row for each song that was tweeted out,
+containing the name of the song, the artist of the song, and the playlist that
+song was playing from. While the data also contained the user IDs of each
+person who tweeted the track they were listening to, our model does not take
+personal information as input.
 
-<center> <img src="g4.png"  width="80%" height="80%"> </center>
+We began our initial analysis of the dataset by removing any rows that contained missing information as well as playlists that only contained a single artist.
+We then randomly sampled 2000 playlists from our dataset, and increased the
+threshold to only keeping artists that were in at least 10 playlists. A graph was
+then generated by iterating through artists within playlists and generating edge
+weights between artist nodes. Initially, this gives us a novel perspective on how
+artists are connected through their appearances in playlists.
 
-<details>
-    <summary> This is a test dropdown </summary>
-    <br>
-    Could be python code here!
-</details>
+## Methods
+
+On a technical level, in network G, each node has K attributes, and there are C communities in total. The node attributes are represented in a binary matrix as X where X_{u,k} is the k-th attribute of node u. Additionally, we consider a community membership matrix F, where we assume that each node u has a non-negative affiliation weight F_{u,c} ∈ [0, ∞) to community c. If F_{u,c} = 0 then node u does not belong to community c.
+
+For implementation, the adjacency matrix is constructed from nodes defined to be artists, where an edge is denoted by two artists existing in the same playlist. Our node attribute is constructed by calculating total playlist appearances by artist and identifying the top 25% threshold of appearance count. The attribute is the binary representation of whether that artist's total appearances is above the threshold.
+
+The CESNA algorithm infers communities through four assumptions:
+
+Nodes that belong to the same communities are likely to be connected to each other
+Nodes can belong to multiple communities
+Nodes with more communities in common are more likely to be connected than those with less in common
+Nodes in the same community share common attributes
+These assumptions are satisfied because:
+
+Edges are created from shared community memberships (edges are created if artists are in the same playlist).
+Each node represented in the community membership matrix F is considered an independent variable which allows a node to belong to multiple communities.
+Each member in community c has independent connections, so those with more communities in common are more likely to be connected than those with less.
+We can predict the value of each node’s attributes based on a node’s community membership.
+The objective function we are trying to solve is then $\hat{F}, \hat{W}$ = argmax $\mathcal{L}(G) + \mathcal{L}(X)$ where $\mathcal{L}(G)$ = $log P(G|F)$ and $\mathcal{L}(X)$ = $log P(X|F, W)$. We break $\mathcal{L}(G)$ and $\mathcal{L}(X)$ into two subproblems by fixing community memberships F and weights W for each node and update F and W at the end of each iteration of gradient ascent.
+
 
 ## Results
 
-Results, including a D3 graph from generated JSON file (networkx)
+Using the CESNA algorithm, we identified seven distinct communities from
+the Spotify dataset. To assess the accuracy of our algorithm, we evaluated
+the top three genres in each community and computed the percentage of nodes
+within each community that have any of these three genres. We also used generalized genre for our accuracy metric here because there are several sub-genres
+of a main genre for example indie-pop and dance-pop which we believe that
+including all under the term pop is appropriate.
 
-Also will include our concluding thoughts in same section.
+<center> <img src="g4.png"  width="80%" height="80%"> </center>
+<center> <h6>  The same network, now assigning a color to each artist based on which
+community CESNA found them most likely to be in. </h6> </center>
+
+
+The first community detected belongs to the rock genre, containing 496 edges
+or playlists and includes popular bands such as Bon Iver and One Direction. The
+
+genre accuracy of this community is approximately 45.4%, while the accuracy
+of the generalized genre improved to 78.8
+
+
+The second community we identified is a dance pop genre group with only five
+edges, including artists such as Charli XCX, Demi Lovato, will.i.am, Naughty
+Boy, and The Pussycat Dolls. Given the small size of this community, both the
+genre accuracy and the generalized genre accuracy are 100
+
+
+The third community is also a dance pop genre group with 76 edges, including artists such as John Mayer and Adele. The genre accuracy of this community
+is 60.5%, and the accuracy of the generalized genre is about 87
+
+
+The fourth community is a hip hop genre group with only eight edges, featuring popular artists like Kendrick Lamar, Drake, and Lil Wayne. The genres of
+this community include hip-hop, rap, and pop. The genre accuracy of this community is 75%, and the accuracy of the generalized genre improves to 87.5%.
+
+
+The fifth community is another dance pop genre group with 26 edges, including artists such as Britney Spears and Snoop Dogg. The genres of this
+community include dance pop, pop, and pop rap. The genre accuracy is 69.2%,
+and the generalized genre accuracy is 88.5%.
+
+
+The sixth community is the second community in the rock genre group with
+a generalized genre of rock which has 17 edges including artists such as Beck
+and Red Hot Chili Peppers. The genres of this community include rock, modern
+rock, and pop rock. The genre accuracy of this community is about 65%, and
+it improves to 94% when we generalize the genre.
+
+
+Finally, the last community we detected in our model also belongs to the
+rock genre with a generalized genre of rock. It has a community size of 148 edges
+including artists such as Coldplay and Arctic Monkeys. The genres of this community include rock, pop, and dance. The genre accuracy of this community is
+about 68%, and the generalized genre accuracy is 86%.
+
+
+Overall, the total accuracy of the original genres associated with each artist
+is 53%, which improves to 82% when we generalize the genres. Looking at a
+single data point in it’s original form, we are only able to identify the playlists an
+artist is featured on. Using this network we can quickly identify several similar
+artists, not just limited to those in the same playlists. In a practical sense, a
+network like this can be used to generate new playlists or discover similar artists.
 
 * * *
-
-##### Appendix
-
- __[Community Detection in Networks with Node Attributes](https://cs.stanford.edu/people/jure/pubs/cesna-icdm13.pdf)__
-
-
-##### Contributions
-
-
-* * *
-* * *
-* * *
-* * *
-
-### Header 3
-
-```python
-# Python code with syntax highlighting.
-if __name__ == '__main__':
-    targets = sys.argv[1:]
-    main(targets)
-```
-
-
-#### Header 4
-
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-
-##### Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-* * *
-
-### Here is an unordered list:
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-
-### Small image
-
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
-
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
