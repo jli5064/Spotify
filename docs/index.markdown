@@ -105,20 +105,18 @@ community CESNA found them most likely to be in. </h6> </center>
 
 
 The first community detected belongs to the rock genre, containing 496 edges
-or playlists and includes popular bands such as Bon Iver and One Direction. The
-
-genre accuracy of this community is approximately 45.4%, while the accuracy
-of the generalized genre improved to 78.8
+or playlists and includes popular bands such as Bon Iver and One Direction. The genre accuracy of this community is approximately 45.4%, while the accuracy
+of the generalized genre improved to 78.8%.
 
 
 The second community we identified is a dance pop genre group with only five
 edges, including artists such as Charli XCX, Demi Lovato, will.i.am, Naughty
 Boy, and The Pussycat Dolls. Given the small size of this community, both the
-genre accuracy and the generalized genre accuracy are 100
+genre accuracy and the generalized genre accuracy are 100%.
 
 
 The third community is also a dance pop genre group with 76 edges, including artists such as John Mayer and Adele. The genre accuracy of this community
-is 60.5%, and the accuracy of the generalized genre is about 87
+is 60.5%, and the accuracy of the generalized genre is about 87%.
 
 
 The fourth community is a hip hop genre group with only eight edges, featuring popular artists like Kendrick Lamar, Drake, and Lil Wayne. The genres of
